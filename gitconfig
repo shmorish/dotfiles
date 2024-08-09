@@ -1,0 +1,22 @@
+[user]
+    name = shmorish
+    email = 110565242+shmorish@users.noreply.github.com
+
+[core]
+    editor = code --wait
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[commit]
+    template = ~/.gitmessage
+
+[alias]
+    rename = commit --amend
+    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+[credential]
+    helper = cache --timeout=3600

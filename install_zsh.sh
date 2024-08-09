@@ -9,6 +9,7 @@ if type zsh > /dev/null 2>&1; then
         # change the theme
         sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="shmorish"/' ~/.zshrc
         cp shmorish.zsh-theme ~/.oh-my-zsh/themes/
+        source ~/.zshrc
     else
         echo "Oh My Zsh is already installed"
     fi
