@@ -21,6 +21,5 @@ jobs:
       - name: Setup Dotfiles
         run: make
 
-      - name: check env
-        run: echo $ZSH_THEME
-        
+      - name: Check env
+        run: echo "The theme you set it is $ZSH_THEME !"
