@@ -1,5 +1,7 @@
 all: brew zsh
 
+THEME = $(shell grep ZSH_THEME ~/.zshrc | cut -d'"' -f2 | cut -f1 -d " ")
+
 zsh:
 	@bash install_zsh.sh
 
@@ -8,6 +10,6 @@ brew:
 
 check_theme:
 	@echo "Checking theme..."
-	@echo "Theme: $(ZSH_THEME)"
+	@echo "Theme: $(THEME)"
 
-.PHONY: all brew zsh
+.PHONY: all brew zsh check_theme
