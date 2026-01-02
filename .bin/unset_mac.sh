@@ -1,15 +1,15 @@
 #!/bin/bash
 
-set -e
-
 load_functions() {
     export SCRIPTS_DIR="$HOME/dotfiles/.bin/scripts"
     . "$SCRIPTS_DIR/brew.sh"
+    . "$SCRIPTS_DIR/oh-my-zsh.sh"
 }
 
 
 main () {
     load_functions
+    uninstall_ohmyzsh
     uninstall_homebrew
 }
 
