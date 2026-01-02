@@ -1,10 +1,7 @@
 #!/bin/bash
 
-load_functions() {
-    export SCRIPTS_DIR="$HOME/dotfiles/.bin/scripts"
-    . "$SCRIPTS_DIR/brew.sh"
-    . "$SCRIPTS_DIR/oh-my-zsh.sh"
-}
+__DOTFILE_SCRIPTS_DIR="$HOME/dotfiles/.bin/scripts"
+. "$__DOTFILE_SCRIPTS_DIR/_function_loader.sh"
 
 main () {
     load_functions
