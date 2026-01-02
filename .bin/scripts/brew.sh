@@ -17,14 +17,11 @@ _setup_from_brewfile() {
 install_homebrew() {
     command -v brew >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
         echo "Homebrew is already installed."
     fi
-    echo "Running brew update..."
     brew update
-    echo "Setting up packages from Brewfile..."
     _setup_from_brewfile
 }
 
