@@ -11,3 +11,18 @@ TODO
 Done
 - zsh, oh-my-zsh
 - Homebrew, Brewfile
+
+## インストール方法
+
+```bash
+git clone https://github.com/shmorish/dotfiles.git --recursive
+cd ~/dotfiles
+make setup
+```
+
+## アンインストール方法
+
+```bash
+cd ~/dotfiles
+make clean
+```

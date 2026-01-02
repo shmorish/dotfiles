@@ -1,9 +1,5 @@
-all: help
-.PHONY: all
-
 help:
 	@echo "Available targets:"
-	@echo "  all      - Build all targets (default)"
 	@echo "  setup    - Setup the environment"
 	@echo "  help     - Show this help message"
 	@echo "  clean    - Remove all build artifacts"

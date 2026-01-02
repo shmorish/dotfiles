@@ -1,14 +1,15 @@
 #!/bin/bash
 
+Brewfile="$HOME/dotfiles/scripts/Brewfile"
+
 _setup_from_brewfile() {
-    config_file="$HOME/dotfiles/.config/Brewfile"
     command -v brew >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo "Homebrew is not installed. Cannot setup from Brewfile."
         return 1
     fi
-    if [ -f "$config_file" ]; then
-        brew bundle --file="$config_file"
+    if [ -f "$Brewfile" ]; then
+        brew bundle --file="$Brewfile"
     else
         echo "Brewfile not found."
     fi
