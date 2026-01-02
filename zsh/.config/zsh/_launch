@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# Source Zsh Configuration Files
+RC_DIR="$HOME/dotfiles/.config/zsh/rc"
+source "$RC_DIR/alias"
+source "$RC_DIR/history"
+source "$RC_DIR/utils"
+
+# Functions
+RC_FUNC_DIR="$HOME/dotfiles/.config/zsh/rc/functions"
+source "$RC_FUNC_DIR/docker"
+source "$RC_FUNC_DIR/utils"
