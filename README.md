@@ -3,6 +3,8 @@
 個人的な設定ファイル群を管理するためのリポジトリです。
 
 TODO
+- nvm submodule
+- nvm setup version(node -> v12.16.1, v22.17.1, v24.12.0)
 - Git, GitHub
 - Node, npm
 - vim, neovim
