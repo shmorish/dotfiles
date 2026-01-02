@@ -11,10 +11,18 @@ help:
 
 setup:
 	@echo "Setting up the environment..."
-	bash .bin/setup_mac.sh
+	@if [ "$$(pwd)" != "${HOME}/dotfiles" ]; then \
+		echo "Error: Please run 'make setup' from ${HOME}/dotfiles"; \
+		exit 1; \
+	fi
+	@bash .bin/setup_mac.sh
 .PHONY: setup
 
 clean:
 	@echo "Cleaning up build artifacts..."
-	bash .bin/unset_mac.sh
+	@if [ "$$(pwd)" != "${HOME}/dotfiles" ]; then \
+		echo "Error: Please run 'make clean' from ${HOME}/dotfiles"; \
+		exit 1; \
+	fi
+	@bash .bin/unset_mac.sh
 .PHONY: clean
