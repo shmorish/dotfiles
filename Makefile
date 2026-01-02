@@ -1,15 +1,20 @@
-all: brew zsh
+all: help
+.PHONY: all
 
-THEME = $(shell grep ZSH_THEME ~/.zshrc | cut -d'"' -f2 | cut -f1 -d " ")
+help:
+	@echo "Available targets:"
+	@echo "  all      - Build all targets (default)"
+	@echo "  setup    - Setup the environment"
+	@echo "  help     - Show this help message"
+	@echo "  clean    - Remove all build artifacts"
+.PHONY: help
 
-brew:
-	@bash install_homebrew.sh
+setup:
+	@echo "Setting up the environment..."
+	bash .bin/setup_mac.sh
+.PHONY: setup
 
-zsh:
-	@bash install_zsh.sh
-
-check_theme:
-	@echo "Checking theme..."
-	@echo "Theme: $(THEME)"
-
-.PHONY: all brew zsh check_theme
+clean:
+	@echo "Cleaning up build artifacts..."
+	bash .bin/unset_mac.sh
+.PHONY: clean
