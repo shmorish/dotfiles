@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Brewfile="$HOME/dotfiles/scripts/Brewfile"
+Brewfile="$HOME/dotfiles/.bin/scripts/Brewfile"
 
 _setup_from_brewfile() {
     command -v brew >/dev/null 2>&1
