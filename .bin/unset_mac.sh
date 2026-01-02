@@ -6,7 +6,6 @@ load_functions() {
     . "$SCRIPTS_DIR/oh-my-zsh.sh"
 }
 
-
 main () {
     load_functions
     uninstall_ohmyzsh

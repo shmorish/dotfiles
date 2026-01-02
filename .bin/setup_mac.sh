@@ -6,7 +6,7 @@ load_functions() {
     . "$SCRIPTS_DIR/oh-my-zsh.sh"
 }
 
-main() {
+main () {
     load_functions
     install_homebrew
     install_ohmyzsh

@@ -1,11 +1,13 @@
 #!/bin/zsh
 
-RC_FUNC_DIR="$HOME/dotfiles/.config/zsh/rc/functions"
+# Aliases
+RC_DIR="$HOME/dotfiles/.config/zsh/rc"
+source "$RC_DIR/alias"
 
+# Functions
+RC_FUNC_DIR="$HOME/dotfiles/.config/zsh/rc/functions"
 source "$RC_FUNC_DIR/docker"
 source "$RC_FUNC_DIR/utils"
-
-ZSH_THEME="shmorish"
 
 # History Configuration
 setopt share_history
