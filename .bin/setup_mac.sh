@@ -7,6 +7,7 @@ main () {
     load_functions
     install_homebrew
     install_ohmyzsh
+    set_symlinks_with_stow
 }
 
 main
