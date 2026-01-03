@@ -11,9 +11,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+    - name: Clone repository
+      run: git clone https://github.com/shmorish/dotfiles.git $HOME/dotfiles
     
     - name: Move to dotfiles directory
       run: cd $HOME/dotfiles
@@ -27,4 +26,9 @@ jobs:
 
     - name: Run ls to verify dotfiles
       run: ls -laR $HOME
+      shell: zsh {0}
+    
+    - name: Run cleanup
+      run: |
+        make clean
       shell: zsh {0}
