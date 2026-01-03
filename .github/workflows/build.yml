@@ -28,7 +28,9 @@ jobs:
       shell: zsh {0}
 
     - name: Run ls to verify dotfiles
-      run: ls -laR $HOME
+      run: |
+        ls -la $HOME/.zshrc $HOME/.vimrc $HOME/.gitconfig $HOME/.nvm
+        ls -laR $HOME/.config
       shell: zsh {0}
     
     - name: Run cleanup
