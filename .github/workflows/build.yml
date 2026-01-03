@@ -11,17 +11,18 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Clone repository
-      run: git clone https://github.com/shmorish/dotfiles.git $HOME/dotfiles
-    
-    - name: Move to dotfiles directory
-      run: cd $HOME/dotfiles
+    - uses: actions/checkout@v4
+      with:
+        path: dotfiles
+        submodules: recursive
+
+    - name: Move repository to HOME directory
+      run: |
+        mv dotfiles $HOME/dotfiles
 
     - name: Run setup
-      run: |
-        # GitHub Actions では HOME が /Users/runner になるため、
-        # シンボリックリンク作成先を調整する必要がある場合があります
-        make setup
+      run: make setup
+      working-directory: ${{ env.HOME }}/dotfiles
       shell: zsh {0}
 
     - name: Run ls to verify dotfiles
@@ -29,6 +30,6 @@ jobs:
       shell: zsh {0}
     
     - name: Run cleanup
-      run: |
-        make clean
+      run: make clean
+      working-directory: ${{ env.HOME }}/dotfiles
       shell: zsh {0}
