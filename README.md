@@ -4,6 +4,7 @@
 
 TODO
 - GitHub
+- npm global packages
 - vim, neovim
 - tmux
 
