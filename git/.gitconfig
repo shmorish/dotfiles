@@ -5,3 +5,6 @@
 [core]
     editor = vim
 
+[user]
+    name = sh-morishita
+    email = sh-morishita@kddi-agdc.com
