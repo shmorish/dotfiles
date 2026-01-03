@@ -14,10 +14,17 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+    
+    - name: Move to dotfiles directory
+      run: cd $HOME/dotfiles
 
     - name: Run setup
       run: |
         # GitHub Actions では HOME が /Users/runner になるため、
         # シンボリックリンク作成先を調整する必要がある場合があります
         make setup
+      shell: zsh {0}
+
+    - name: Run ls to verify dotfiles
+      run: ls -laR $HOME
       shell: zsh {0}
