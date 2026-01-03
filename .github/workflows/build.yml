@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Run setup
+      run: |
+        # GitHub Actions では HOME が /Users/runner になるため、
+        # シンボリックリンク作成先を調整する必要がある場合があります
+        make setup
+      shell: zsh {0}
