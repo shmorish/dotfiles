@@ -20,3 +20,10 @@ install_node () {
     nvm alias default "$LTS_NODE_VERSION"
     nvm use default
 }
+
+uninstall_node () {
+    NVM_DIR="$HOME/.nvm"
+    rm -rf "$NVM_DIR/versions/node"
+    rm -rf "$NVM_DIR/alias"
+    rm -rf "$NVM_DIR/.cache"
+}

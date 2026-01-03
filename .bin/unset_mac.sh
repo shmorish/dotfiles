@@ -8,6 +8,7 @@ main () {
     unset_symlinks_with_stow
     uninstall_ohmyzsh
     uninstall_homebrew
+    uninstall_node
 }
 
 main
