@@ -21,8 +21,9 @@ jobs:
         mv dotfiles $HOME/dotfiles
 
     - name: Run setup
-      run: make setup
-      working-directory: ${{ env.HOME }}/dotfiles
+      run: |
+        cd $HOME/dotfiles
+        make setup
       shell: zsh {0}
 
     - name: Run ls to verify dotfiles
@@ -30,6 +31,7 @@ jobs:
       shell: zsh {0}
     
     - name: Run cleanup
-      run: make clean
-      working-directory: ${{ env.HOME }}/dotfiles
+      run: |
+        cd $HOME/dotfiles
+        make clean
       shell: zsh {0}
