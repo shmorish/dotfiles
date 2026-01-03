@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 install_ohmyzsh() {
   if [ -d "$HOME/dotfiles/oh-my-zsh" ]; then

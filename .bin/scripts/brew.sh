@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 Brewfile="$HOME/dotfiles/.bin/scripts/Brewfile"
 
