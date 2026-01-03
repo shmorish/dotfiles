@@ -6,7 +6,7 @@ install_ohmyzsh() {
     return
   fi
   ZSH="$HOME/dotfiles/oh-my-zsh" REPO="shmorish/ohmyzsh" \
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/shmorish/ohmyzsh/master/tools/install.sh)" "" --unattended
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/shmorish/ohmyzsh/master/tools/install.sh)"
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/dotfiles/oh-my-zsh/custom}/plugins/zsh-autosuggestions
 }
 

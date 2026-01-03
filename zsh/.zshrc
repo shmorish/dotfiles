@@ -1,4 +1,9 @@
 # ---------------------------------- #
+# My Configurations
+# ---------------------------------- #
+source $HOME/.config/zsh/_launch
+
+# ---------------------------------- #
 # Oh My Zsh Configuration
 # ---------------------------------- #
 ZSH_THEME="shmorish"
@@ -16,11 +21,6 @@ plugins=(
 )
 ZSH="$HOME/dotfiles/oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-
-# ---------------------------------- #
-# My Configurations
-# ---------------------------------- #
-source $HOME/.config/zsh/_launch
 
 # ---------------------------------- #
 # NVM Configuration (version v0.40.3)
