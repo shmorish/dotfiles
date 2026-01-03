@@ -5,13 +5,17 @@ help:
 	@echo "  clean    - Remove all build artifacts"
 .PHONY: help
 
-setup:
+install_submodules:
+	@git submodule update --init --recursive
+.PHONY: install_submodules
+
+setup: install_submodules
 	@echo "Setting up the environment..."
 	@if [ "$$(pwd)" != "${HOME}/dotfiles" ]; then \
 		echo "Error: Please run 'make setup' from ${HOME}/dotfiles"; \
 		exit 1; \
 	fi
-	@bash .bin/setup_mac.sh
+	@zsh .bin/setup_mac.sh
 .PHONY: setup
 
 clean:
@@ -20,5 +24,5 @@ clean:
 		echo "Error: Please run 'make clean' from ${HOME}/dotfiles"; \
 		exit 1; \
 	fi
-	@bash .bin/unset_mac.sh
+	@zsh .bin/unset_mac.sh
 .PHONY: clean
