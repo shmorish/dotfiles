@@ -22,10 +22,12 @@ set_symlinks_with_stow() {
     _set_symlinks zsh
     _set_symlinks git
     _set_symlinks nvm
+    _set_symlinks vim
 }
 
 unset_symlinks_with_stow() {
     stow --dir="$HOME/dotfiles" --target="$HOME" --delete zsh
     stow --dir="$HOME/dotfiles" --target="$HOME" --delete git
     stow --dir="$HOME/dotfiles" --target="$HOME" --delete nvm
+    stow --dir="$HOME/dotfiles" --target="$HOME" --delete vim
 }
