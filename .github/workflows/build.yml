@@ -7,15 +7,21 @@ on:
   # pull_request:
   #   branches: [ main ]
 
+permissions:
+  pull-requests: write
+
 jobs:
   test:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         path: dotfiles
         submodules: recursive
+
+    - name: Monitor Workflow Performance
+      uses: ke-kawai/workflow-performance-monitor@v1.0.0
 
     - name: Move repository to HOME directory
       run: |
