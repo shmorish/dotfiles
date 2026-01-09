@@ -1,0 +1,137 @@
+{
+  "title": "Double Tap Option to Launch iTerm2 (Semi-Transparent)",
+  "rules": [
+    {
+      "description": "Double Tap Left Option to launch/focus iTerm2 with 'SemiTransparent' profile",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_option",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to_if_alone": [
+            {
+              "set_variable": {
+                "name": "option_double_tap_potential",
+                "value": 1
+              }
+            },
+            {
+              "set_variable": {
+                "name": "option_double_tap_potential",
+                "value": 0
+              },
+              "delay_milliseconds": 200
+            }
+          ],
+          "to_if_held_down": [
+            {
+              "key_code": "left_option"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "option_double_tap_potential",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_option",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              // ---- ここからシェルコマンド ----
+              "shell_command": "osascript -e 'tell application \"System Events\" to set is_running to (name of processes) contains \"iTerm2\"' -e 'if is_running then' -e 'tell application \"iTerm\" to activate' -e 'else' -e 'tell application \"iTerm\"' -e 'create window with profile \"SemiTransparent\"' -e 'activate' -e 'end tell' -e 'end if'",
+              // ---- ここまでシェルコマンド ----
+              "lazy": true
+            },
+            {
+              "set_variable": {
+                "name": "option_double_tap_potential",
+                "value": 0
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "option_double_tap_potential",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+    // 右Optionキーにも同じ機能を割り当てたい場合は、以下のコメントアウトを解除し、
+    // "left_option" を "right_option" に変更してください。
+    /*
+    ,
+    {
+      "description": "Double Tap Right Option to launch/focus iTerm2 with 'SemiTransparent' profile",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_option", // <-変更点
+            "modifiers": { "optional": ["any"] }
+          },
+          "to_if_alone": [
+            {
+              "set_variable": { "name": "option_double_tap_potential_right", "value": 1 } // <-変数名変更
+            },
+            {
+              "set_variable": { "name": "option_double_tap_potential_right", "value": 0 }, // <-変数名変更
+              "delay_milliseconds": 200
+            }
+          ],
+          "to_if_held_down": [ { "key_code": "right_option" } ], // <-変更点
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "option_double_tap_potential_right", // <-変数名変更
+              "value": 1
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_option", // <-変更点
+            "modifiers": { "optional": ["any"] }
+          },
+          "to": [
+            {
+              "shell_command": "osascript -e 'tell application \"System Events\" to set is_running to (name of processes) contains \"iTerm2\"' -e 'if is_running then' -e 'tell application \"iTerm\" to activate' -e 'else' -e 'tell application \"iTerm\"' -e 'create window with profile \"SemiTransparent\"' -e 'activate' -e 'end tell' -e 'end if'",
+              "lazy": true
+            },
+            {
+              "set_variable": { "name": "option_double_tap_potential_right", "value": 0 } // <-変数名変更
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "option_double_tap_potential_right", // <-変数名変更
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+    */
+  ]
+}

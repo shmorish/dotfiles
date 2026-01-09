@@ -1,8 +1,16 @@
-#!/bin/bash
+#!/bin/zsh
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
+
+stow_dirs=(
+    "zsh"
+    "git"
+    "nvm"
+    "vim"
+    "karabiner"
+)
 
 _remove_files() {
     rm -f "$HOME/.zshrc"
@@ -19,15 +27,13 @@ _set_symlinks() {
 
 set_symlinks_with_stow() {
     _remove_files
-    _set_symlinks zsh
-    _set_symlinks git
-    _set_symlinks nvm
-    _set_symlinks vim
+    for dir in "${stow_dirs[@]}"; do
+        _set_symlinks "$dir"
+    done
 }
 
 unset_symlinks_with_stow() {
-    stow --dir="$HOME/dotfiles" --target="$HOME" --delete zsh
-    stow --dir="$HOME/dotfiles" --target="$HOME" --delete git
-    stow --dir="$HOME/dotfiles" --target="$HOME" --delete nvm
-    stow --dir="$HOME/dotfiles" --target="$HOME" --delete vim
+    for dir in "${stow_dirs[@]}"; do
+        stow --dir="$HOME/dotfiles" --target="$HOME" --delete "$dir"
+    done
 }

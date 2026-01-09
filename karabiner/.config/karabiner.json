@@ -1,0 +1,195 @@
+{
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "[US] 左右のCommand Key（⌘）を、単独で押したときは 英数・かな キー として扱う（左⌘は かな、右⌘は 英数）",
+            "manipulators": [
+              {
+                "description": " LEFT COMMAND → KANA",
+                "from": {
+                  "key_code": "left_command",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "left_command"
+                  }
+                ],
+                "to_if_alone": [
+                  {
+                    "key_code": "japanese_kana"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": " RIGHT COMMAND → EISUU",
+                "from": {
+                  "key_code": "right_command",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "right_command"
+                  }
+                ],
+                "to_if_alone": [
+                  {
+                    "key_code": "japanese_eisuu"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Option+L to Lock Screen (macOS 10.13+)",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "l",
+                  "modifiers": {
+                    "mandatory": [
+                      "option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "q",
+                    "modifiers": [
+                      "left_control",
+                      "left_command"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "F3 to Clipboard Screenshot",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "f3"
+                },
+                "to": [
+                  {
+                    "key_code": "4",
+                    "modifiers": [
+                      "left_command",
+                      "left_control",
+                      "left_shift"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Double Tap Left Option to launch/focus iTerm2 with 'SemiTransparent' profile",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "name": "option_double_tap_potential",
+                    "type": "variable_unless",
+                    "value": 1
+                  }
+                ],
+                "from": {
+                  "key_code": "left_option",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to_if_alone": [
+                  {
+                    "set_variable": {
+                      "name": "option_double_tap_potential",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "delay_milliseconds": 200,
+                    "set_variable": {
+                      "name": "option_double_tap_potential",
+                      "value": 0
+                    }
+                  }
+                ],
+                "to_if_held_down": [
+                  {
+                    "key_code": "left_option"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "name": "option_double_tap_potential",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
+                "from": {
+                  "key_code": "left_option",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "lazy": true,
+                    "shell_command": "osascript -e 'tell application \"System Events\" to set is_running to (name of processes) contains \"iTerm2\"' -e 'if is_running then' -e 'tell application \"iTerm\" to activate' -e 'else' -e 'tell application \"iTerm\"' -e 'create window with profile \"SemiTransparent\"' -e 'activate' -e 'end tell' -e 'end if'"
+                  },
+                  {
+                    "set_variable": {
+                      "name": "option_double_tap_potential",
+                      "value": 0
+                    }
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Default profile",
+      "selected": true,
+      "simple_modifications": [
+        {
+          "from": {
+            "key_code": "caps_lock"
+          },
+          "to": [
+            {
+              "key_code": "japanese_eisuu"
+            }
+          ]
+        }
+      ],
+      "virtual_hid_keyboard": {
+        "keyboard_type_v2": "ansi"
+      }
+    }
+  ]
+}
