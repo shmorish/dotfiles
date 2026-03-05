@@ -10,6 +10,7 @@ stow_dirs=(
     "nvm"
     "vim"
     "karabiner"
+    "wezterm"
 )
 
 _remove_files() {
