@@ -22,7 +22,6 @@ install_node () {
 }
 
 uninstall_node () {
-    NVM_DIR="$HOME/.nvm"
     rm -rf "$NVM_DIR/versions/node"
     rm -rf "$NVM_DIR/alias"
     rm -rf "$NVM_DIR/.cache"
