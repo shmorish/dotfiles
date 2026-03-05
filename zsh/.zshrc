@@ -3,6 +3,11 @@
 # ---------------------------------- #
 source $HOME/.config/zsh/_launch
 
+# NVM PATH
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
 # WezTerm PATH
 export WEZTERM_CONFIG_FILE="$HOME/.config/wezterm/wezterm.lua"
 

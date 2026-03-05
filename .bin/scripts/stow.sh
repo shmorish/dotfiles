@@ -7,7 +7,6 @@ NC='\033[0m'
 stow_dirs=(
     "zsh"
     "git"
-    "nvm"
     "vim"
     "karabiner"
     "wezterm"
