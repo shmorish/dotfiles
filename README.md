@@ -17,7 +17,6 @@ Done
 ## インストール方法
 
 ```bash
-git clone https://github.com/shmorish/dotfiles.git --recursive
 cd ~/dotfiles
 make setup
 ```

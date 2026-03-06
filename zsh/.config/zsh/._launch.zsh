@@ -7,3 +7,4 @@ source "$_RC_DIR/z.zsh"
 
 source "$_RC_DIR/functions/._launch.zsh"
 source "$_RC_DIR/alias/._launch.zsh"
+source "$_RC_DIR/zsh-autosuggestions/._launch.zsh"
