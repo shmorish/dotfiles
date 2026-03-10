@@ -59,3 +59,7 @@ unset_symlinks_with_stow() {
         stow --dir="$HOME/dotfiles" --target="$HOME" --delete "$dir"
     done
 }
+
+if [[ "${(%):-%N}" == "$0" ]]; then
+    set_symlinks_with_stow
+fi

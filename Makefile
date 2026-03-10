@@ -22,3 +22,12 @@ clean:
 	fi
 	@zsh .bin/unset_mac.sh
 .PHONY: clean
+
+update_stow:
+	@echo "Updating stow symlinks..."
+	@if [ "$$(pwd)" != "${HOME}/dotfiles" ]; then \
+		echo "Error: Please run 'make update_stow' from ${HOME}/dotfiles"; \
+		exit 1; \
+	fi
+	@zsh .bin/scripts/stow.sh
+.PHONY: update_stow
