@@ -9,6 +9,8 @@ stow_dirs=(
     "git"
     "vim"
     "karabiner"
+    "nvim"
+    "nvim-minimal"
     "wezterm"
 )
 

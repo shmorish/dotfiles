@@ -2,3 +2,8 @@
 .vscode/
 .DS_Store
 oh-my-zsh/
+
+# nvim swap files
+*.swp
+nvim/undo/*
+!nvim/undo/.gitkeep
