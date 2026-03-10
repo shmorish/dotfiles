@@ -20,7 +20,7 @@ M.setup = function()
     ["rust_analyzer"] = function()
       lspconfig.rust_analyzer.setup({
         settings = {
-          ['rust_analyzer'] = {
+          ['rust-analyzer'] = {
             check = {
               command = "clippy",
             },

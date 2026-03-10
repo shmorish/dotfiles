@@ -36,6 +36,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       vim.cmd([[ hi TreesitterContextBottom gui=underline guisp=Grey ]])
       vim.cmd([[ hi TreesitterContextLineNumberBottom gui=underline guisp=Grey ]])
