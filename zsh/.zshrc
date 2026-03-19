@@ -1,7 +1,7 @@
 # ---------------------------------- #
 # My Configurations
 # ---------------------------------- #
-source $HOME/.config/zsh/._launch.zsh
+source $HOME/.config/zsh/init.zsh
 
 # NVM PATH
 export NVM_DIR="/opt/homebrew/opt/nvm"

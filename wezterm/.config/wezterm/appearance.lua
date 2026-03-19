@@ -16,7 +16,7 @@ function M.apply(config)
 
   -- 不透明度
   config.window_background_opacity = 0.75
-  config.macos_window_background_blur = 20
+  config.macos_window_background_blur = 5
 
   -- タイトルバーを非表示
   config.window_decorations = "RESIZE"
