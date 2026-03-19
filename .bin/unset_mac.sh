@@ -1,10 +1,11 @@
 #!/bin/zsh
 
-__DOTFILE_SCRIPTS_DIR="$HOME/dotfiles/.bin/scripts"
-. "$__DOTFILE_SCRIPTS_DIR/_function_loader.sh"
+_SCRIPTS_DIR="$HOME/dotfiles/.bin/scripts"
+. "$_SCRIPTS_DIR/brew.sh"
+. "$_SCRIPTS_DIR/stow.sh"
+. "$_SCRIPTS_DIR/node.sh"
 
 main () {
-    load_functions
     unset_symlinks_with_stow
     uninstall_homebrew
     uninstall_node
