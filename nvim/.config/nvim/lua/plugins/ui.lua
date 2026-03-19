@@ -3,7 +3,10 @@ return {
     "rebelot/kanagawa.nvim",
     lazy = false,
     priority = 1000,
-    config = function() vim.cmd.colorscheme("kanagawa-dragon") end,
+    config = function()
+      require("kanagawa").setup({ transparent = true })
+      vim.cmd.colorscheme("kanagawa-dragon")
+    end,
   },
   {
     'nvim-lualine/lualine.nvim',
