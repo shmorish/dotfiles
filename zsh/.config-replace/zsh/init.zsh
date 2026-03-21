@@ -1,10 +1,8 @@
 #!/bin/zsh
 
-# Zsh Configuration Files
-_RC_DIR="$HOME/.config/zsh"
-source "$_RC_DIR/history.zsh"
-source "$_RC_DIR/z.zsh"
+CONFIG_DIR="$HOME/.config/zsh/config"
 
-source "$_RC_DIR/functions/init.zsh"
-source "$_RC_DIR/alias/init.zsh"
-source "$_RC_DIR/zsh-autosuggestions/init.zsh"
+# ------------ My Configs ------------ #
+[ -d "$CONFIG_DIR" ] && for config in "$CONFIG_DIR"/*.zsh; do
+  source "$config"
+done

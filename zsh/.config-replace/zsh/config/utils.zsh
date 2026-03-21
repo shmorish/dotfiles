@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# zsh utilities
+alias zshrc='nvim ~/.zshrc && source ~/.zshrc'
+
 # Weather information using wttr.in
 weather () {
   if [ -z "$1" ]; then
