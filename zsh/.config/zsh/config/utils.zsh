@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Homebrew wrapper
+command brew "$@"
+if [[ "$1" == "install" || "$1" == "uninstall" ]]; then
+  echo "Refreshing completions..."
+  rm -f ${HOME}/.zcompdump*
+  compinit
+fi
+
 # zsh utilities
 alias zshrc='nvim ~/.zshrc && source ~/.zshrc'
 
