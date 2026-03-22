@@ -12,12 +12,24 @@
 
 shell = "zsh"
 
-[plugins]
+[templates]
+defer = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
+fzf-install = "{{ dir }}/install --bin > /dev/null \n path=($path {{ dir }}/bin(N-/))\n"
+fzf-source = "source <(fzf --zsh)"
 
+[plugins]
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+[plugins.fzf]
+github = 'junegunn/fzf'
+apply = ['fzf-install', 'fzf-source']
+[plugins.fzf-tab]
+github = 'Aloxaf/fzf-tab'
 [plugins.zsh-z]
 github = "agkozak/zsh-z"
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
+apply = ["defer"]
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
 [plugins.zeno]

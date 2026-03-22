@@ -14,9 +14,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # sheldon
 eval "$(sheldon source)"
 
-# fzf
-source <(fzf --zsh)
-
 source $HOME/.config/zsh/init.zsh
 
 # NVM PATH（そのうちsheldonで管理予定 https://github.com/lukechilds/zsh-nvm）
