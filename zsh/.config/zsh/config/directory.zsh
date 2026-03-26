@@ -22,7 +22,13 @@ alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
 
-alias mkcd='mkdir -p "$1" && cd "$1"'
+function mkcd() {
+  if [[ -n $1 ]]; then
+    mkdir -p "$1" && cd "$1"
+  else
+    echo "Usage: mkcd <directory_name>"
+  fi
+}
 
 function d () {
   if [[ -n $1 ]]; then
