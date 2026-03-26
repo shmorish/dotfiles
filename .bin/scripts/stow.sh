@@ -10,7 +10,6 @@ stow_dirs=(
     "vim"
     "karabiner"
     "nvim"
-    "nvim-minimal"
     "wezterm"
 )
 
