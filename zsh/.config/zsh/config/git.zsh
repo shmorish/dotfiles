@@ -2,6 +2,7 @@
 
 # Git
 alias g='git'
+alias ga='git add'
 alias gs='git status'
 alias gss='git status -s'
 alias gp='git push'
