@@ -4,6 +4,9 @@
 alias aws='aws --color=auto'
 
 # AWS CLI MFA Login
+# 前提条件:
+# ~/.aws/config に mfa_serial が設定されていること
+# ~/.aws/credentials に aws_access_key_id と aws_secret_access_key が設定されていること
 function aws_login_mfa() {
     local profile_name
     local profiles
@@ -38,15 +41,9 @@ function aws_login_mfa() {
         echo "Failed to get session token. Please check your profile and MFA settings." >&2
         return 1
     fi
-    local access_key_id
-    local secret_access_key
-    local session_token
-    access_key_id=$(jq -r '.Credentials.AccessKeyId' "$session_token_file")
-    secret_access_key=$(jq -r '.Credentials.SecretAccessKey' "$session_token_file")
-    session_token=$(jq -r '.Credentials.SessionToken' "$session_token_file")
-    export AWS_ACCESS_KEY_ID="$access_key_id"
-    export AWS_SECRET_ACCESS_KEY="$secret_access_key"
-    export AWS_SESSION_TOKEN="$session_token"
+    export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' "$session_token_file")
+    export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' "$session_token_file")
+    export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' "$session_token_file")
     rm -f "$session_token_file"
     echo '---------------------------------------'
     aws sts get-caller-identity --profile "$profile_name"
@@ -57,4 +54,5 @@ function aws_login_mfa() {
         echo "Successfully logged in to AWS with profile '${profile_name}'." >&2
     fi
     echo '---------------------------------------'
+    export AWS_PROFILE="$profile_name"
 }
