@@ -3,8 +3,23 @@ local act = wezterm.action
 local act_callback = wezterm.action_callback
 
 return {
-  -- Cmd + h : デフォルト(Hide)を無効化
-  { key = 'h', mods = 'CMD', action = act.DisableDefaultAssignment },
+  -- Cmd + h : 左半分にスナップ
+  { key = 'h', mods = 'CMD', action = act_callback(function(window, _pane)
+    local screens = wezterm.gui.screens()
+    local screen = screens.active
+    local half_w = math.floor(screen.width / 2)
+    window:set_position(0, 0)
+    window:set_inner_size(half_w, screen.height)
+  end) },
+
+  -- Cmd + l : 右半分にスナップ
+  { key = 'l', mods = 'CMD', action = act_callback(function(window, _pane)
+    local screens = wezterm.gui.screens()
+    local screen = screens.active
+    local half_w = math.floor(screen.width / 2)
+    window:set_position(half_w, 0)
+    window:set_inner_size(half_w, screen.height)
+  end) },
 
   -- Cmd + a : 画面の最大化
   { key = 'a', mods = 'CMD', action = act_callback(function(window, _pane)
