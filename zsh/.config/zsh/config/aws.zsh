@@ -32,7 +32,8 @@ function aws_login_mfa() {
         echo "One-time password cannot be empty." >&2
         return 1
     fi
-    aws sts get-session-token --profile "$profile_name" --serial-number "$mfa_serial" --token-code "$one_time_password" > /tmp/aws_session_token.json
+    local session_token_file=".aws_session_token.json"
+    aws sts get-session-token --profile "$profile_name" --serial-number "$mfa_serial" --token-code "$one_time_password" > "$session_token_file"
     if [[ $? -ne 0 ]]; then
         echo "Failed to get session token. Please check your profile and MFA settings." >&2
         return 1
@@ -40,12 +41,13 @@ function aws_login_mfa() {
     local access_key_id
     local secret_access_key
     local session_token
-    access_key_id=$(jq -r '.Credentials.AccessKeyId' /tmp/aws_session_token.json)
-    secret_access_key=$(jq -r '.Credentials.SecretAccessKey' /tmp/aws_session_token.json)
-    session_token=$(jq -r '.Credentials.SessionToken' /tmp/aws_session_token.json)
+    access_key_id=$(jq -r '.Credentials.AccessKeyId' "$session_token_file")
+    secret_access_key=$(jq -r '.Credentials.SecretAccessKey' "$session_token_file")
+    session_token=$(jq -r '.Credentials.SessionToken' "$session_token_file")
     export AWS_ACCESS_KEY_ID="$access_key_id"
     export AWS_SECRET_ACCESS_KEY="$secret_access_key"
     export AWS_SESSION_TOKEN="$session_token"
+    rm -f "$session_token_file"
     echo '---------------------------------------'
     aws sts get-caller-identity --profile "$profile_name"
     if [[ $? -ne 0 ]]; then
