@@ -86,7 +86,7 @@ disabled = false
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bold yellow"
 
-# AWS プロファイル（重要）
+# AWS プロファイル（右端）
 [aws]
 symbol = " "
 style = "bold orange"
@@ -123,8 +123,8 @@ style = "bold white"
 format = "[$symbol ]($style)"
 
 [os.symbols]
-Macos = ""
-Linux = ""
+Macos = ""
+Linux = ""
 Windows = "󰍲"
 
 # ユーザー（SSH接続時のみ表示）
@@ -141,39 +141,39 @@ symbol = " "
 
 # Node.js
 [nodejs]
-symbol = " "
+symbol = " "
 style = "bold green"
 format = "[$symbol$version]($style) "
 detect_files = ["package.json", ".nvmrc", ".node-version"]
 
 # Python
 [python]
-symbol = " "
+symbol = " "
 style = "bold yellow"
 format = '[$symbol$version(\($virtualenv\))]($style) '
 detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfile"]
 
 # Rust
 [rust]
-symbol = " "
+symbol = " "
 style = "bold orange"
 format = "[$symbol$version]($style) "
 
 # Go
 [golang]
-symbol = " "
+symbol = "󰟓 "
 style = "bold cyan"
 format = "[$symbol$version]($style) "
 
 # Java
 [java]
-symbol = " "
+symbol = " "
 style = "bold red"
 format = "[$symbol$version]($style) "
 
 # Docker context（デフォルト以外のみ表示）
 [docker_context]
-symbol = " "
+symbol = " "
 style = "bold blue"
 format = "[$symbol$context]($style) "
 only_with_files = false
@@ -188,7 +188,7 @@ format = "[$symbol$workspace]($style) "
 # 環境変数（AWS_PROFILE を直接表示したい場合の補助）
 [env_var.AWS_PROFILE]
 variable = "AWS_PROFILE"
-symbol = " "
+symbol = " "
 style = "bold orange"
 format = '[$symbol$env_value]($style) '
 disabled = true  # aws モジュールと重複するため無効化（必要なら true に）
