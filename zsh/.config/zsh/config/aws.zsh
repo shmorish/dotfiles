@@ -56,3 +56,11 @@ function aws_login_mfa() {
     echo '---------------------------------------'
     export AWS_PROFILE="$profile_name"
 }
+
+function aws_logout_mfa() {
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    unset AWS_SESSION_TOKEN
+    unset AWS_PROFILE
+    echo "Logged out from AWS CLI MFA session."
+}
