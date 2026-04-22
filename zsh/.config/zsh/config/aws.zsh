@@ -3,6 +3,29 @@
 # AWS CLI
 alias aws='aws --color=auto'
 
+function aws-login() {
+    local choice
+    if command -v fzf &>/dev/null; then
+        choice=$(echo -e "MFA Login\nWeb Console Login" | fzf --prompt="Select AWS login method: " --height=40% --reverse)
+    else
+        echo "Select AWS login method:"
+        echo "1) MFA Login"
+        echo "2) Web Console Login"
+        printf 'Enter choice (1 or 2): ' >/dev/tty
+        read -r choice </dev/tty
+        case $choice in
+            1) choice="MFA Login" ;;
+            2) choice="Web Console Login" ;;
+            *) echo "Invalid choice. Please enter 1 or 2." >&2; return 1 ;;
+        esac
+    fi
+    case $choice in
+        "MFA Login") aws_login_mfa ;;
+        "Web Console Login") aws_login_web ;;
+        *) echo "Invalid choice. Please select a valid login method." >&2; return 1 ;;
+    esac
+}
+
 # AWS CLI MFA Login
 # 前提条件:
 # ~/.aws/config に mfa_serial が設定されていること
@@ -63,4 +86,37 @@ function aws_logout_mfa() {
     unset AWS_SESSION_TOKEN
     unset AWS_PROFILE
     echo "Logged out from AWS CLI MFA session."
+}
+
+# AWS Login manage console
+# Open https://{AccountID}.signin.aws.amazon.com/console in browser
+function aws_login_web() {
+    local profile_name
+    local profiles
+    profiles=$(grep '^\[' ~/.aws/config 2>/dev/null | sed 's/^\[profile //;s/^\[//;s/\]$//' | grep -v '^default$')
+    if [[ -n "$profiles" ]] && command -v fzf &>/dev/null; then
+        profile_name=$(echo "$profiles" | fzf --prompt="Select AWS profile: " --height=40% --reverse)
+    else
+        printf 'Enter AWS profile name: ' >/dev/tty
+        read -r profile_name </dev/tty
+    fi
+    if [[ -z "$profile_name" ]]; then
+        echo "Profile name cannot be empty." >&2
+        return 1
+    fi
+    local account_id
+    account_id=$(aws sts get-caller-identity --profile "$profile_name" --query 'Account' --output text)
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to get account ID. Please check your profile settings." >&2
+        return 1
+    fi
+    local url="https://${account_id}.signin.aws.amazon.com/console"
+    if command -v open &>/dev/null; then
+        open "$url"
+    elif command -v xdg-open &>/dev/null; then
+        xdg-open "$url"
+    else
+        echo "Cannot open browser. Please open the following URL manually:" >&2
+        echo "$url"
+    fi
 }
