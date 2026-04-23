@@ -16,10 +16,8 @@ eval "$(sheldon source)"
 
 source $HOME/.config/zsh/init.zsh
 
-# NVM PATH（そのうちsheldonで管理予定 https://github.com/lukechilds/zsh-nvm）
-export NVM_DIR="/opt/homebrew/opt/nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+# mise
+eval "$(mise activate zsh)"
 
 # starship
 eval "$(starship init zsh)"

@@ -11,6 +11,7 @@ stow_dirs=(
     "karabiner"
     "nvim"
     "wezterm"
+    "mise"
 )
 
 _set_symlinks() {
