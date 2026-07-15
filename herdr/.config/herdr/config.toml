@@ -1,0 +1,25 @@
+[update]
+channel = "stable"
+
+# ターミナル(WezTerm)の配色をそのまま使う
+[theme]
+name = "terminal"
+
+[ui]
+agent_panel_sort = "spaces"
+
+# WezTermの操作感を再現 (Cmd系はTUIに届かないためOpt/Altベース)
+[keys]
+# Opt + hjkl : ペイン移動 (WezTermと同じ)
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"
+
+# Opt + d / Opt + Shift + d : 左右分割 / 上下分割 (WezTermのCmd+d相当)
+split_vertical = "alt+d"
+split_horizontal = "alt+shift+d"
+
+# Ctrl + Opt + l / h : 右/左のタブへ (WezTermのCmd+Opt+l/h相当)
+next_tab = "ctrl+alt+l"
+previous_tab = "ctrl+alt+h"
