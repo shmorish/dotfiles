@@ -1,25 +1,85 @@
+onboarding = false
 [update]
 channel = "stable"
 
-# ターミナル(WezTerm)の配色をそのまま使う
+# ターミナル(iTerm)の配色をそのまま使う
 [theme]
 name = "terminal"
 
+# WezTermのタブ配色 (tabs.lua) に寄せる
+[theme.custom]
+accent = "#ae8b2d"      # アクティブタブ/ハイライト = WezTerm active_bg
+surface0 = "#5c6d74"    # 非アクティブ要素の背景 = WezTerm inactive_bg
+surface1 = "#5c6d74"
+# NOTE: panel_bg はアクティブタブ文字色/モーダル背景/タブバー背景で共有されており
+#       タブ文字だけ白にはできない (白にするとモーダル等も白くなる) ため未指定に戻した
+text = "#ffffff"
+subtext0 = "#ffffff"    # 非アクティブタブなど控えめテキストも白に
+
 [ui]
 agent_panel_sort = "spaces"
+# タブが1つのときはタブバー(+ボタン含む)を非表示
+hide_tab_bar_when_single_tab = true
+# 新規タブ作成時に名前を聞かず、生成された名前ですぐ作る
+prompt_new_tab_name = false
 
-# WezTermの操作感を再現 (Cmd系はTUIに届かないためOpt/Altベース)
+# キーバインドは herdr デフォルト (tmux風) ベース + 一部カスタム ([keys] 参照)
+# prefix はバッククォート (`)。リテラルの ` を入力するときは ` を2連打
+#   左右分割    = prefix+d        上下分割    = prefix+shift+d
+#   ペイン移動   = prefix+h/j/k/l  ペイン入替   = prefix+shift+h/j/k/l
+#   ペイン閉じる = prefix+x        zoom       = prefix+z
+#   リサイズ    = prefix+r        新規タブ    = prefix+t
+#   タブ切替    = prefix+n/p, prefix+1..9    タブ閉じる = prefix+w
+#   タブrename  = prefix+m       ペインrename = prefix+c
+#   workspace  = T=新規 W=閉じる N/P=切替 S=一覧 M=rename
+#   サイドバー   = prefix+s        設定       = prefix+,
+#   通知元へ    = prefix+o (デフォルトのまま)
+#   copy mode  = prefix+[        quit(detach) = prefix+q
+#   ヘルプ     = prefix+?
+
+show_agent_labels_on_pane_borders = true
+[ui.sound]
+enabled = true
+
+[ui.toast]
+delivery = "terminal"
+
+# コピー時の "copied to clipboard" トーストは非表示
+[ui.toast.clipboard]
+enabled = false
+
 [keys]
-# Opt + hjkl : ペイン移動 (WezTermと同じ)
-focus_pane_left = "alt+h"
-focus_pane_down = "alt+j"
-focus_pane_up = "alt+k"
-focus_pane_right = "alt+l"
+# prefix = ` (バッククォート)。` 2連打でリテラルの ` を送信
+prefix = "backtick"
 
-# Opt + d / Opt + Shift + d : 左右分割 / 上下分割 (WezTermのCmd+d相当)
-split_vertical = "alt+d"
-split_horizontal = "alt+shift+d"
+# prefix+d / prefix+shift+d : 左右分割 / 上下分割
+split_vertical = "prefix+d"
+split_horizontal = "prefix+shift+d"
 
-# Ctrl + Opt + l / h : 右/左のタブへ (WezTermのCmd+Opt+l/h相当)
-next_tab = "ctrl+alt+l"
-previous_tab = "ctrl+alt+h"
+# prefix+t / prefix+w : 新規タブ / タブ閉じる
+new_tab = "prefix+t"
+close_tab = "prefix+w"
+# デフォルトの prefix+w (workspaceピッカー) はタブ閉じるに譲って移動
+workspace_picker = "prefix+shift+s"
+
+# prefix+shift+t : 新規workspace (t=タブ / T=workspace のペア)
+new_workspace = "prefix+shift+t"
+# デフォルトの prefix+shift+t (タブrename) は prefix+m へ移動
+rename_tab = "prefix+m"
+
+# workspace操作はタブ操作のshift版: W=閉じる N/P=切替
+close_workspace = "prefix+shift+w"
+next_workspace = "prefix+shift+n"
+previous_workspace = "prefix+shift+p"
+# デフォルトの prefix+shift+w (workspace rename) は prefix+shift+m へ (タブrename=mとペア)
+rename_workspace = "prefix+shift+m"
+# デフォルトの prefix+shift+p (ペインrename) は prefix+c へ移動
+rename_pane = "prefix+c"
+
+# prefix+s : サイドバー表示切替
+toggle_sidebar = "prefix+s"
+# デフォルトの prefix+s (設定) は prefix+, へ移動
+settings = "prefix+comma"
+
+# prefix+q : quit (detach; セッションはサーバーに残る) — herdrデフォルトのまま明示
+detach = "prefix+q"

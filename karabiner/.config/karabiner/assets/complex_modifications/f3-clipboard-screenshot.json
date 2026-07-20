@@ -5,7 +5,6 @@
       "description": "F3 to Clipboard Screenshot",
       "manipulators": [
         {
-          "type": "basic",
           "from": {
             "key_code": "f3"
           },
@@ -18,7 +17,8 @@
                 "left_shift"
               ]
             }
-          ]
+          ],
+          "type": "basic"
         }
       ]
     }

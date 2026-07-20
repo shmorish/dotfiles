@@ -11,3 +11,7 @@ nvim/.config/nvim/undo/*
 # herdr runtime files (in case of stow dir-folding on fresh machines)
 herdr/.config/herdr/*
 !herdr/.config/herdr/config.toml
+
+# Karabiner runtime backups (dir is stow-folded into the repo)
+karabiner/.config/karabiner/automatic_backups/
+

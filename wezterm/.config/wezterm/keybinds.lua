@@ -26,21 +26,29 @@ return {
     window:maximize()
   end) },
 
-  -- ペイン分割・移動・タブ切替・リサイズは herdr に移譲
-  -- Cmd系はTUIに届かないため、herdrのキーに変換して送信する
-  -- (herdr/.config/herdr/config.toml の [keys] を参照)
+  -- Cmd + d : 左右分割
+  { key = 'd', mods = 'CMD', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
 
-  -- Cmd + d : 左右分割 (herdrの alt+d)
-  { key = 'd', mods = 'CMD', action = act.SendString '\x1bd' },
+  -- Cmd + Shift + d : 上下分割
+  { key = 'd', mods = 'CMD|SHIFT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
 
-  -- Cmd + Shift + d : 上下分割 (herdrの alt+shift+d)
-  { key = 'd', mods = 'CMD|SHIFT', action = act.SendString '\x1bD' },
+  -- Cmd + Option + l / h : 右/左のTabへ
+  { key = 'l', mods = 'CMD|OPT', action = act.ActivateTabRelative(1) },
+  { key = 'h', mods = 'CMD|OPT', action = act.ActivateTabRelative(-1) },
 
-  -- Cmd + Option + l / h : 右/左のタブへ (herdrの ctrl+alt+l / ctrl+alt+h)
-  { key = 'l', mods = 'CMD|OPT', action = act.SendString '\x1b\x0c' },
-  { key = 'h', mods = 'CMD|OPT', action = act.SendString '\x1b\x08' },
+  -- Option + hjkl : ペイン移動
+  { key = 'h', mods = 'OPT', action = act.ActivatePaneDirection 'Left' },
+  { key = 'l', mods = 'OPT', action = act.ActivatePaneDirection 'Right' },
+  { key = 'k', mods = 'OPT', action = act.ActivatePaneDirection 'Up' },
+  { key = 'j', mods = 'OPT', action = act.ActivatePaneDirection 'Down' },
 
   -- Cmd + + / - : フォント拡大・縮小
   { key = '+', mods = 'CMD', action = act.IncreaseFontSize },
   { key = '-', mods = 'CMD', action = act.DecreaseFontSize },
+
+  -- Cmd + Shift + hjkl : ペインサイズ変更
+  { key = 'h', mods = 'CMD|SHIFT', action = act.AdjustPaneSize { 'Left', 5 } },
+  { key = 'l', mods = 'CMD|SHIFT', action = act.AdjustPaneSize { 'Right', 5 } },
+  { key = 'k', mods = 'CMD|SHIFT', action = act.AdjustPaneSize { 'Up', 5 } },
+  { key = 'j', mods = 'CMD|SHIFT', action = act.AdjustPaneSize { 'Down', 5 } },
 }
