@@ -7,3 +7,6 @@ oh-my-zsh/
 *.swp
 nvim/.config/nvim/undo/*
 !nvim/.config/nvim/undo/.gitkeep
+
+# karabiner auto-generated backups
+karabiner/.config/karabiner/automatic_backups/
