@@ -21,4 +21,8 @@ end)
 
 config.keys = require 'keybinds'
 
+-- Claude Code セッション一覧モーダル (Cmd + s で表示)
+local csm = wezterm.plugin.require('https://github.com/shmorish/wezterm-claude-session-manager')
+csm.apply_to_config(config, {})
+
 return config
