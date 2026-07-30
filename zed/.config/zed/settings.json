@@ -10,12 +10,12 @@
   "diff_view_style": "split",
   "cli_default_open_behavior": "existing_window",
   "auto_install_extensions": {
-    "material-icon-theme": true
+    "vscode-great-icons": true
   },
   "icon_theme": {
     "mode": "dark",
-    "light": "Material Icon Theme",
-    "dark": "Material Icon Theme"
+    "light": "VSCode Great Icons Theme",
+    "dark": "VSCode Great Icons Theme"
   },
   "vim_mode": true,
   "agent_servers": {
