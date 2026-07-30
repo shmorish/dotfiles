@@ -12,6 +12,7 @@ stow_dirs=(
     "nvim"
     "wezterm"
     "mise"
+    "zed"
 )
 
 _set_symlinks() {
