@@ -23,7 +23,7 @@
       "default_config_options": {
         "effort": "high",
         "fast": true,
-        "mode": "bypassPermissions",
+        "mode": "plan",
         "model": "sonnet"
       },
       "type": "registry"
@@ -46,6 +46,9 @@
   "project_panel": {
     "dock": "left",
     "default_width": 360
+  },
+  "file_finder": {
+    "modal_max_width": "xlarge"
   },
   "agent": {
     "dock": "right"
