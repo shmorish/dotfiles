@@ -3,3 +3,4 @@
 .vscode/
 .DS_Store
 **/.claude/settings.local.json
+**/.claude/settings.json
