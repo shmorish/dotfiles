@@ -1,0 +1,45 @@
+// Zed keymap
+//
+// For information on how to configure key bindings, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see all of Zed's default key bindings, run `zed: open default keymap`
+// from the command palette (cmd-shift-p)
+//
+// helix_mode 前提。検索は既定の cmd-f (このファイル内) / cmd-shift-f (リポジトリ全体) を
+// そのまま使うため未設定 (Helix既定の space f は file_finder::Toggle なので上書きしない)。
+[
+  // git: alt-g (option+g) をリーダーキーにして2ストロークで呼べるようにする。
+  // alt-g はvim.json全体で一切使われていない空きキー。g=gitで覚えやすい。
+  // インサートモードでの誤発火を避けるため、normal/selectモード限定のcontextに閉じる
+  // (以前 Workspace context に置いていた commit/push/pull/fetch 等もここに統一)。
+  {
+    "context": "(vim_mode == helix_normal || vim_mode == helix_select) && !menu",
+    "use_key_equivalents": true,
+    "bindings": {
+      // status(Gitパネル): cmd-g は macOS の Find Next (⌘G) にOSレベルで奪われるため使わない
+      "alt-g g": "git_panel::ToggleFocus",
+      "alt-g d": "git::Diff",
+      "alt-g b": "git::Blame",
+      "alt-g m": "git::OpenModifiedFiles",
+      "alt-g t": "git::ToggleStaged",
+      "alt-g x": "git::Restore",
+      "alt-g c": "git::Commit",
+      // リモート操作
+      "alt-g p": "git::Push",
+      "alt-g l": "git::Pull",
+      "alt-g f": "git::Fetch",
+      // ステージング
+      "alt-g a": "git::StageAll",
+      "alt-g u": "git::UnstageAll"
+    }
+  },
+  // Gitパネルにフォーカスがある間は、2打目を待たず alt-g 単発で閉じる(フォーカスを戻す)
+  {
+    "context": "GitPanel",
+    "use_key_equivalents": true,
+    "bindings": {
+      "alt-g": "git_panel::ToggleFocus"
+    }
+  }
+]

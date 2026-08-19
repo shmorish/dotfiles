@@ -17,7 +17,7 @@
     "light": "Material Icon Theme",
     "dark": "Material Icon Theme"
   },
-  "vim_mode": true,
+  "helix_mode": true,
   "agent_servers": {
     "claude-acp": {
       "default_config_options": {
