@@ -13,6 +13,7 @@ stow_dirs=(
     "wezterm"
     "mise"
     "zed"
+    "herdr"
 )
 
 _set_symlinks() {

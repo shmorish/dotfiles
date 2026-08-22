@@ -1,0 +1,14 @@
+# herdr config
+# キーバインドはデフォルトを覚える方針なので [keys] は書かない。
+# 実際に効いているバインドは ctrl+b -> ? で確認できる。
+
+[experimental]
+# prefix mode 中だけ macOS の入力ソースを ASCII 配列に一時切替し、
+# 抜けたら元に戻す。日本語入力オンのままでも ctrl+b -> ? などが通る。
+switch_ascii_input_source_in_prefix = true
+
+# 変換候補ウィンドウが位置を追えなくなる場合はこれを有効化する。
+# 副作用: 自前でカーソルを描かないアプリ(vim normal mode 等)で余分なカーソルが見える。
+# reveal_hidden_cursor_for_cjk_ime = false
+# cjk_ime_agents = ["claude", "codex"]
+# cjk_ime_cursor_shape = "steady_block"
