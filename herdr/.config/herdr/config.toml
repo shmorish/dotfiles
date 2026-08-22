@@ -7,8 +7,10 @@
 # 抜けたら元に戻す。日本語入力オンのままでも ctrl+b -> ? などが通る。
 switch_ascii_input_source_in_prefix = true
 
-# 変換候補ウィンドウが位置を追えなくなる場合はこれを有効化する。
-# 副作用: 自前でカーソルを描かないアプリ(vim normal mode 等)で余分なカーソルが見える。
-# reveal_hidden_cursor_for_cjk_ime = false
-# cjk_ime_agents = ["claude", "codex"]
-# cjk_ime_cursor_shape = "steady_block"
+# 自前でカーソルを描く TUI の上でも macOS の変換候補ウィンドウが
+# 位置を追えるようにする。カーソルを隠すだけで描き直さないアプリ
+# (vim normal mode 等) で余分なカーソルが見える副作用があるため、
+# 対象はインストール済みのエージェントのペインだけに絞っている。
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude", "copilot"]
+# cjk_ime_cursor_shape = "steady_block"  # block / underline / bar 系も指定可
