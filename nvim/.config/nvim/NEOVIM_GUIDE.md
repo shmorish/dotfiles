@@ -256,7 +256,7 @@ nvim/.config/nvim/
     └── plugins/
         ├── colorscheme.lua     # kanagawa-dragon（背景透過）
         ├── explorer.lua        # ファイラで隠しファイルも全部表示
-        ├── hunk.lua            # 差分を hunk / 行単位で選べる DiffEditor
+        ├── autosave.lua        # 自動保存（auto-save.nvim）
         ├── lsp.lua             # Mason で管理する LSP サーバーの宣言
         └── markdown.lua        # markdown の lint を無効化（整形は prettier）
 ```
@@ -270,47 +270,39 @@ nvim/.config/nvim/
 | 全角スペース         | `Space`（leader）として扱う                                                                               |
 | 配色                 | kanagawa-dragon + 背景透過（WezTerm の透過に合わせる）                                                    |
 | ファイラ             | 隠しファイル・gitignore 済みも全部表示（`H` / `I` でトグル）。`<BS>` は開いたときのルートより上に行かない |
+| 自動保存             | 編集停止 1 秒後に保存（auto-save.nvim / `:ASToggle` で一時停止・gitcommit は対象外）                      |
+| LSP                  | go / rust / python / typescript / javascript / lua のサーバーを Mason に明示宣言                          |
+| markdown             | lint は無効化（整形は prettier に任せる）                                                                 |
 
 有効にしている extras: mini-surround / prettier / docker / git / go / json / markdown / python / rust / toml / typescript / yaml / treesitter-context
 
 ---
 
-## 7. hunk.nvim（差分の分割エディタ）
+## 7. 差分を見る（hunk CLI）
 
-2 つのディレクトリを比較し、**ファイル単位 / hunk 単位 / 行単位**で採用する変更を選べるツールです。
-
-```text
-:DiffEditor <left> <right> [output]
-```
-
-`output` を省略すると `right` 側が書き換わります。UI 内のキー:
-
-| キー            | 動作                                                          |
-| --------------- | ------------------------------------------------------------- |
-| `g?`            | ヘルプ（キー一覧）                                            |
-| `<Tab>`         | 左右の diff を行き来                                          |
-| `a` / `A`       | 行 / hunk の採用切替（ファイルツリーでは `a` でファイル単位） |
-| `s`             | 左右両側の行をまとめて切替                                    |
-| `]h` / `[h`     | 次 / 前の hunk                                                |
-| `<leader>e`     | ファイルツリーへフォーカス                                    |
-| `<leader>Enter` | 選択を確定して書き出す                                        |
-| `q`             | 中断（終了コード != 0 なので何も書き込まれない）              |
-
-### git / jujutsu から使う（任意）
-
-git の difftool として使う場合は `~/.gitconfig` に:
+差分の確認は Neovim ではなく **`hunk`**（Homebrew で入れた TUI diff ビューア）に任せています。
+`~/.gitconfig` の設定はこれだけです。
 
 ```ini
-[diff]
-    tool = hunk
-[difftool "hunk"]
-    cmd = nvim -c "DiffEditor $LOCAL $REMOTE"
-[difftool]
-    prompt = false
+[pager]
+    diff = hunk pager
+    show = hunk pager
 ```
 
-呼び出しは `git difftool -d`（`-d` = ディレクトリ比較）。
-jujutsu を使う場合は `config.toml` に `[ui] diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]`。
+| コマンド             | 動作                               |
+| -------------------- | ---------------------------------- |
+| `git diff`           | そのまま hunk が開く               |
+| `git show`           | 同上                               |
+| `hunk diff`          | git を介さず作業ツリーの差分を見る |
+| `hunk diff --staged` | ステージ済みの差分                 |
+| `hunk show HEAD~1`   | 特定コミットの差分                 |
+| `hunk --help`        | サブコマンド一覧                   |
+
+pager は端末に出力するときだけ使われるので、`git diff | grep ...` やスクリプト内では従来どおり素の
+テキストが出ます。
+
+Neovim 内で差分を見る手段としては、gitsigns（`]h` / `[h` で hunk 移動、`Space g h p` でプレビュー）と
+`Space g g` の lazygit があります。
 
 ---
 

@@ -9,6 +9,10 @@
 [core]
     editor = vim
 
+[pager]
+    diff = hunk pager
+    show = hunk pager
+
 [user]
     name = shmorish
     email = 110565242+shmorish@users.noreply.github.com
