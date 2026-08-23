@@ -254,6 +254,7 @@ nvim/.config/nvim/
     │   ├── keymaps.lua         # 追加キーマップ（jj / :W など）
     │   └── autocmds.lua        # 追加 autocmd
     └── plugins/
+        ├── claudecode.lua      # Claude Code 連携（ファイラからの追加キー補完）
         ├── colorscheme.lua     # kanagawa-dragon（背景透過）
         ├── explorer.lua        # ファイラで隠しファイルも全部表示
         ├── autosave.lua        # 自動保存（auto-save.nvim）
@@ -274,7 +275,7 @@ nvim/.config/nvim/
 | LSP                  | go / rust / python / typescript / javascript / lua のサーバーを Mason に明示宣言                          |
 | markdown             | lint は無効化（整形は prettier に任せる）                                                                 |
 
-有効にしている extras: mini-surround / prettier / docker / git / go / json / markdown / python / rust / toml / typescript / yaml / treesitter-context
+有効にしている extras: claudecode / mini-surround / prettier / docker / git / go / json / markdown / python / rust / toml / typescript / yaml / treesitter-context
 
 ---
 
@@ -306,7 +307,29 @@ Neovim 内で差分を見る手段としては、gitsigns（`]h` / `[h` で hunk
 
 ---
 
-## 8. メンテナンス用コマンド
+## 8. Claude Code 連携（claudecode.nvim）
+
+Claude Code CLI を Neovim の中から使うための連携です。VS Code 拡張と同じ仕組みで、
+Neovim が WebSocket サーバーを立て（`~/.claude/ide/<port>.lock` に接続情報を書く）、
+そこに `claude` が繋がります。開いているファイルや選択範囲がそのまま Claude の文脈になります。
+
+| キー        | 動作                                                                        |
+| ----------- | --------------------------------------------------------------------------- |
+| `Space a c` | Claude を開く / 閉じる                                                      |
+| `Space a f` | Claude のウィンドウにフォーカス                                             |
+| `Space a r` | 前回のセッションを再開（`--resume`）                                        |
+| `Space a C` | 直前のセッションを継続（`--continue`）                                      |
+| `Space a b` | 今のバッファを文脈に追加                                                    |
+| `Space a s` | 選択範囲を Claude に送る（Visual モード）/ ファイラ上ではそのファイルを追加 |
+| `Space a a` | Claude が出した差分を採用                                                   |
+| `Space a d` | 差分を却下                                                                  |
+
+主なコマンド: `:ClaudeCode`（トグル）、`:ClaudeCodeSelectModel`（モデル選択して起動）、
+`:ClaudeCodeStatus`（接続状態）、`:ClaudeCodeStop`（サーバー停止）。
+
+---
+
+## 9. メンテナンス用コマンド
 
 | コマンド                 | 用途                                                       |
 | ------------------------ | ---------------------------------------------------------- |
@@ -320,7 +343,7 @@ extras を追加したら `lazyvim.json` が書き換わるので、そのまま
 
 ---
 
-## 9. 困ったとき
+## 10. 困ったとき
 
 - **キー操作が分からない** → `Esc` 2 回 → `Space` を押して which-key を見る → `Space s k` で検索
 - **プラグインが壊れた** → `:Lazy restore`（`lazy-lock.json` の状態に戻す）
@@ -332,7 +355,7 @@ extras を追加したら `lazyvim.json` が書き換わるので、そのまま
 
 ---
 
-## 10. 学習ロードマップ
+## 11. 学習ロードマップ
 
 1. **1 日目**: `vimtutor`（ターミナルで実行、30 分）で `hjkl` `i` `Esc` `dd` `u` を体に入れる
 2. **2〜3 日目**: `Space Space`（ファイルを開く）と `Space /`（grep）だけで移動する練習
