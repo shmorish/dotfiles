@@ -1,0 +1,222 @@
+-- which-key のラベルを日本語化する
+--
+-- which-key に言語設定は無いが、ラベル描画時に通る `replace.desc` フックへ
+-- 関数を足すことで、グループ名・個別項目をまとめて差し替えられる。
+-- 表に無いものは英語のまま表示される（プラグイン更新で原文が変わっても壊れない）。
+
+---@type table<string, string>
+local ja = {
+  -- グループ
+  ["tabs"] = "タブ",
+  ["buffer"] = "バッファ",
+  ["code"] = "コード",
+  ["debug"] = "デバッグ",
+  ["profiler"] = "プロファイラ",
+  ["file/find"] = "ファイル",
+  ["git"] = "Git",
+  ["hunks"] = "Git hunk",
+  ["quit/session"] = "終了 / セッション",
+  ["search"] = "検索",
+  ["ui"] = "表示切替",
+  ["diagnostics/quickfix"] = "診断 / quickfix",
+  ["windows"] = "ウィンドウ",
+  ["prev"] = "前へ",
+  ["next"] = "次へ",
+  ["goto"] = "移動",
+  ["surround"] = "囲み",
+  ["fold"] = "折りたたみ",
+  ["ai"] = "AI (Claude)",
+  ["noice"] = "通知 (noice)",
+
+  -- ファイル・検索
+  ["Find Files (Root Dir)"] = "ファイル検索（ルート）",
+  ["Find Files (cwd)"] = "ファイル検索（カレント）",
+  ["Find Files (git-files)"] = "ファイル検索（git 管理下）",
+  ["Find Config File"] = "Neovim 設定ファイル",
+  ["Recent"] = "最近使ったファイル",
+  ["Recent (cwd)"] = "最近使ったファイル（カレント）",
+  ["Projects"] = "プロジェクト一覧",
+  ["New File"] = "新規ファイル",
+  ["Explorer Snacks (root dir)"] = "ファイラ（ルート）",
+  ["Explorer Snacks (cwd)"] = "ファイラ（カレント）",
+  ["Grep (Root Dir)"] = "全文検索（ルート）",
+  ["Grep (cwd)"] = "全文検索（カレント）",
+  ["Grep Open Buffers"] = "開いているファイルを全文検索",
+  ["Visual selection or word (Root Dir)"] = "カーソル下の語を検索",
+  ["Visual selection or word (cwd)"] = "カーソル下の語を検索（カレント）",
+  ["Buffer Lines"] = "このファイル内を行検索",
+  ["Search and Replace"] = "検索・置換",
+  ["Search History"] = "検索履歴",
+  ["Command History"] = "コマンド履歴",
+  ["Commands"] = "コマンド一覧",
+  ["Keymaps"] = "キーマップ検索",
+  ["Help Pages"] = "ヘルプ検索",
+  ["Man Pages"] = "man 検索",
+  ["Marks"] = "マーク一覧",
+  ["Jumps"] = "ジャンプ履歴",
+  ["Registers"] = "レジスタ",
+  ["Undotree"] = "undo 履歴",
+  ["Resume"] = "直前の検索を再開",
+  ["Todo"] = "TODO 一覧",
+  ["Todo/Fix/Fixme"] = "TODO / FIX 一覧",
+  ["Notification History"] = "通知履歴",
+  ["Icons"] = "アイコン検索",
+  ["Colorschemes"] = "カラースキーム",
+
+  -- バッファ・ウィンドウ
+  ["Buffers"] = "バッファ一覧",
+  ["Buffers (all)"] = "バッファ一覧（全部）",
+  ["Prev Buffer"] = "前のバッファ",
+  ["Next Buffer"] = "次のバッファ",
+  ["Switch to Other Buffer"] = "直前のバッファ",
+  ["Delete Buffer"] = "バッファを閉じる",
+  ["Delete Buffer and Window"] = "バッファとウィンドウを閉じる",
+  ["Delete Other Buffers"] = "他のバッファを閉じる",
+  ["Delete Non-Pinned Buffers"] = "ピン留め以外を閉じる",
+  ["Toggle Pin"] = "ピン留め切替",
+  ["Pick Buffer"] = "バッファをラベルで選ぶ",
+  ["Split Window Below"] = "上下に分割",
+  ["Split Window Right"] = "左右に分割",
+  ["Delete Window"] = "ウィンドウを閉じる",
+  ["Go to Left Window"] = "左のウィンドウへ",
+  ["Go to Lower Window"] = "下のウィンドウへ",
+  ["Go to Upper Window"] = "上のウィンドウへ",
+  ["Go to Right Window"] = "右のウィンドウへ",
+  ["Terminal (Root Dir)"] = "ターミナル（ルート）",
+  ["Terminal (cwd)"] = "ターミナル（カレント）",
+
+  -- コード (LSP)
+  ["Hover"] = "ドキュメント表示",
+  ["Goto Definition"] = "定義へ",
+  ["Goto Declaration"] = "宣言へ",
+  ["Goto Implementation"] = "実装へ",
+  ["Goto T[y]pe Definition"] = "型定義へ",
+  ["References"] = "参照一覧",
+  ["Signature Help"] = "シグネチャ表示",
+  ["Code Action"] = "コードアクション",
+  ["Source Action"] = "ソースアクション",
+  ["Rename"] = "リネーム",
+  ["Rename File"] = "ファイル名を変更",
+  ["Organize Imports"] = "import を整理",
+  ["Format"] = "整形",
+  ["Format Injected Langs"] = "埋め込み言語も整形",
+  ["Lsp Info"] = "LSP の状態",
+  ["LSP Symbols"] = "シンボル検索",
+  ["LSP Workspace Symbols"] = "シンボル検索（プロジェクト）",
+  ["Symbols (Trouble)"] = "シンボル一覧",
+  ["Mason"] = "LSP / ツール管理",
+  ["Lazy"] = "プラグイン管理",
+
+  -- 診断
+  ["Line Diagnostics"] = "この行の診断",
+  ["Diagnostics"] = "診断一覧",
+  ["Buffer Diagnostics"] = "診断一覧（このファイル）",
+  ["Diagnostics (Trouble)"] = "診断一覧",
+  ["Buffer Diagnostics (Trouble)"] = "診断一覧（このファイル）",
+  ["Location List (Trouble)"] = "location list",
+  ["Quickfix List (Trouble)"] = "quickfix 一覧",
+  ["Jump to the next diagnostic in the current buffer"] = "次の診断へ",
+  ["Jump to the previous diagnostic in the current buffer"] = "前の診断へ",
+
+  -- Git
+  ["Lazygit (Root Dir)"] = "lazygit",
+  ["Lazygit (cwd)"] = "lazygit（カレント）",
+  ["Git Status"] = "git status",
+  ["Git Diff (hunks)"] = "変更 hunk 一覧",
+  ["Git Blame Line"] = "この行の blame",
+  ["Git Current File History"] = "このファイルの履歴",
+  ["Git Log"] = "コミット履歴",
+  ["Git Browse (open)"] = "GitHub で開く",
+  ["Stage Hunk"] = "hunk を stage",
+  ["Reset Hunk"] = "hunk を取り消し",
+  ["Preview Hunk Inline"] = "hunk をプレビュー",
+  ["Blame Line"] = "この行の blame",
+
+  -- 編集・移動
+  ["Toggle comment"] = "コメント切替",
+  ["Toggle comment line"] = "行コメント切替",
+  ["Add Surrounding"] = "囲みを追加",
+  ["Delete Surrounding"] = "囲みを削除",
+  ["Replace Surrounding"] = "囲みを置換",
+  ["Flash"] = "ジャンプ（2 文字）",
+  ["Flash Treesitter"] = "構文ブロックへジャンプ",
+  ["Add empty line above cursor"] = "上に空行を追加",
+  ["Add empty line below cursor"] = "下に空行を追加",
+
+  -- 終了・セッション
+  ["Quit All"] = "全部終了",
+  ["Restore Session"] = "セッションを復元",
+  ["Restore Last Session"] = "直前のセッションを復元",
+  ["Select Session"] = "セッションを選ぶ",
+  ["Don't Save Current Session"] = "このセッションを保存しない",
+
+  -- Claude Code
+  ["Toggle Claude"] = "Claude を開閉",
+  ["Focus Claude"] = "Claude にフォーカス",
+  ["Resume Claude"] = "セッションを再開",
+  ["Continue Claude"] = "セッションを継続",
+  ["Add current buffer"] = "このバッファを渡す",
+  ["Send to Claude"] = "選択範囲を渡す",
+  ["Add file"] = "このファイルを渡す",
+  ["Accept diff"] = "差分を採用",
+  ["Deny diff"] = "差分を却下",
+
+
+  -- 追加分
+  ["Toggle Git Signs"] = "Git 差分表示の切替",
+  ["Toggle Treesitter Context"] = "関数コンテキスト表示の切替",
+  ["Todo (Trouble)"] = "TODO 一覧",
+  ["Todo/Fix/Fixme (Trouble)"] = "TODO / FIX 一覧",
+  ["Highlights"] = "ハイライト一覧",
+  ["Autocmds"] = "autocmd 一覧",
+  ["Search for Plugin Spec"] = "プラグイン設定を検索",
+  ["Quickfix List"] = "quickfix 一覧",
+  ["Location List"] = "location list",
+  ["GitHub Issues (open)"] = "GitHub issue（オープン）",
+  ["GitHub Issues (all)"] = "GitHub issue（すべて）",
+  ["GitHub Pull Requests (open)"] = "GitHub PR（オープン）",
+  ["GitHub Pull Requests (all)"] = "GitHub PR（すべて）",
+  ["Git Stash"] = "git stash 一覧",
+  ["Git Diff (origin)"] = "origin との差分",
+  ["LSP references/definitions/... (Trouble)"] = "定義・参照一覧",
+  ["Dismiss All Notifications"] = "通知をすべて消す",
+  ["Dismiss All"] = "通知をすべて消す",
+  ["Noice All"] = "通知ログ（全部）",
+  ["Noice History"] = "通知履歴",
+  ["Noice Last Message"] = "直前の通知",
+  ["Delete Buffers to the Left"] = "左側のバッファを閉じる",
+  ["Delete Buffers to the Right"] = "右側のバッファを閉じる",
+  ["Toggle Scratch Buffer"] = "スクラッチバッファ開閉",
+  ["Select Scratch Buffer"] = "スクラッチバッファを選ぶ",
+  ["Profiler Scratch Buffer"] = "プロファイラ結果を開く",
+
+  -- which-key 自身
+  ["Buffer Keymaps (which-key)"] = "このバッファのキー一覧",
+  ["Window Hydra Mode (which-key)"] = "ウィンドウ操作モード",
+}
+
+return {
+  {
+    "folke/which-key.nvim",
+    opts = {
+      replace = {
+        -- リスト値は tbl_deep_extend で丸ごと置き換わるため、
+        -- which-key 既定の整形ルールもここに書き出しておく必要がある
+        desc = {
+          { "<Plug>%(?(.*)%)?", "%1" },
+          { "^%+", "" },
+          { "<[cC]md>", "" },
+          { "<[cC][rR]>", "" },
+          { "<[sS]ilent>", "" },
+          { "^lua%s+", "" },
+          { "^call%s+", "" },
+          { "^:%s*", "" },
+          -- 上の整形を通した後に対訳を当てる
+          function(desc)
+            return ja[desc]
+          end,
+        },
+      },
+    },
+  },
+}

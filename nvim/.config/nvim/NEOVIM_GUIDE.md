@@ -67,13 +67,21 @@ Insert に入るキーの違い:
 
 数字を前置すると回数になります（`5j` = 5 行下、`3w` = 3 単語進む）。
 
-### 画面内を一気に飛ぶ（flash.nvim）
+### 画面内を一気に飛ぶ（flash.nvim / hop.nvim）
 
-| キー              | 動き                                                           |
-| ----------------- | -------------------------------------------------------------- |
-| `s` + 2文字       | 画面内のその文字列へジャンプ（ラベルが出るので該当キーを押す） |
-| `S`               | 構文ブロック単位で選んでジャンプ                               |
-| `f` / `t` + 1文字 | 行内でその文字へ / 手前へ（`;` `,` で次/前）                   |
+| キー              | 動き                                               |
+| ----------------- | -------------------------------------------------- |
+| `s` + 2文字       | 画面内のその 2 文字へジャンプ（flash）             |
+| `S`               | 構文ブロック単位で選んでジャンプ（flash）          |
+| `f` / `F` + 1文字 | 画面内のその文字へ（hop。カーソルより前方 / 後方） |
+| `t` / `T` + 1文字 | 画面内のその文字の手前へ（hop。前方 / 後方）       |
+
+hop は候補が複数あるとラベル（`etovxqpdygfblzhckisuran` の文字）を表示するので、**目的の文字 →
+ラベル文字**の順に押します。飛べるのは画面に表示されている範囲までで、スクロールの外へは飛べません
+（そこへ行きたいときは `/` 検索か `Space s b` の行検索を使います）。
+
+`f` `t` は hop に置き換えているため、素の Vim と違い **`;` `,` での繰り返しは効きません**。
+flash 側の f/t 拡張は二重になるので切ってあります。
 
 ### 検索
 
@@ -136,6 +144,7 @@ Vim の編集は **動詞（operator）+ 範囲（motion / text object）** の�
 ## 4. LazyVim のキー体系（Leader = `Space`）
 
 `Space` を押して待てば which-key がメニューを出します。**丸暗記は不要**で、頭文字だけ覚えれば辿れます。
+表示ラベルは日本語化してあります（対訳表は `lua/plugins/which-key.lua`。未登録のものは英語のまま出ます）。
 
 | プレフィックス | 分類                               |
 | -------------- | ---------------------------------- |
@@ -255,8 +264,10 @@ nvim/.config/nvim/
     │   └── autocmds.lua        # 追加 autocmd
     └── plugins/
         ├── claudecode.lua      # Claude Code 連携（ファイラからの追加キー補完）
-        ├── colorscheme.lua     # kanagawa-dragon（背景透過）
+        ├── colorscheme.lua     # kanagawa-dragon（暗めの不透明背景）
         ├── explorer.lua        # ファイラで隠しファイルも全部表示
+        ├── hop.lua             # f/t/F/T を hop の画面内ジャンプに置換
+        ├── which-key.lua       # which-key のラベルを日本語化
         ├── autosave.lua        # 自動保存（auto-save.nvim）
         ├── lsp.lua             # Mason で管理する LSP サーバーの宣言
         └── markdown.lua        # markdown の lint を無効化（整形は prettier）
@@ -264,16 +275,18 @@ nvim/.config/nvim/
 
 ### 独自に足しているもの（LazyVim 標準からの差分）
 
-| キー / 設定          | 内容                                                                                                      |
-| -------------------- | --------------------------------------------------------------------------------------------------------- |
-| `jj`                 | Insert モードを抜ける（旧設定から引き継ぎ）                                                               |
-| `:W` `:Q` `:WQ` など | Shift 押しっぱなしのタイプミス救済                                                                        |
-| 全角スペース         | `Space`（leader）として扱う                                                                               |
-| 配色                 | kanagawa-dragon + 背景透過（WezTerm の透過に合わせる）                                                    |
-| ファイラ             | 隠しファイル・gitignore 済みも全部表示（`H` / `I` でトグル）。`<BS>` は開いたときのルートより上に行かない |
-| 自動保存             | 編集停止 1 秒後に保存（auto-save.nvim / `:ASToggle` で一時停止・gitcommit は対象外）                      |
-| LSP                  | go / rust / python / typescript / javascript / lua のサーバーを Mason に明示宣言                          |
-| markdown             | lint は無効化（整形は prettier に任せる）                                                                 |
+| キー / 設定          | 内容                                                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `jj`                 | Insert モードを抜ける（旧設定から引き継ぎ）                                                                                              |
+| `:W` `:Q` `:WQ` など | Shift 押しっぱなしのタイプミス救済                                                                                                       |
+| 全角スペース         | `Space`（leader）として扱う                                                                                                              |
+| 配色                 | kanagawa-dragon。背景は透過せず既定より一段暗い `#121111` を使用                                                                         |
+| ファイラ             | 隠しファイル・gitignore 済みも全部表示（`H` / `I` でトグル）。`<BS>` は開いたときのルートより上に行かない。cwd 基準の `Space E` は無効化 |
+| which-key            | `Space` を押したときのラベルを日本語表示（未登録の項目は英語のまま）                                                                     |
+| `f` `t` `F` `T`      | hop.nvim の画面内ジャンプに置換（flash の f/t 拡張は無効化）                                                                             |
+| 自動保存             | 編集停止 1 秒後に保存（auto-save.nvim / `:ASToggle` で一時停止・gitcommit は対象外）                                                     |
+| LSP                  | go / rust / python / typescript / javascript / lua のサーバーを Mason に明示宣言                                                         |
+| markdown             | lint は無効化（整形は prettier に任せる）                                                                                                |
 
 有効にしている extras: claudecode / mini-surround / prettier / docker / git / go / json / markdown / python / rust / toml / typescript / yaml / treesitter-context
 

@@ -1,15 +1,25 @@
 -- 配色: kanagawa-dragon
--- WezTerm 側で背景を透過 (opacity 0.75) しているので transparent を有効にする。
--- 補完メニューなどのフロートは読みやすさ優先で背景を残す。
+-- 背景は透過せず、dragon 既定 (#181616) より一段暗い色を塗る
 return {
   {
     "rebelot/kanagawa.nvim",
     lazy = false,
     priority = 1000,
     opts = {
-      transparent = true,
+      transparent = false,
       dimInactive = false,
       terminalColors = true,
+      colors = {
+        theme = {
+          dragon = {
+            ui = {
+              bg = "#121111", -- 本文の背景（既定 #181616）
+              bg_gutter = "#121111", -- 行番号・サイン列を本文と揃える
+              bg_dim = "#0e0d0d", -- 非アクティブ側の背景
+            },
+          },
+        },
+      },
     },
   },
   {

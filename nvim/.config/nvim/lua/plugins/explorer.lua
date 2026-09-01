@@ -2,6 +2,10 @@
 return {
   {
     "folke/snacks.nvim",
+    keys = {
+      -- cwd 基準のファイラは使わないので無効化（ルート基準の `<leader>e` だけ残す）
+      { "<leader>E", false },
+    },
     opts = {
       picker = {
         sources = {

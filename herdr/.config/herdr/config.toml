@@ -14,3 +14,6 @@ switch_ascii_input_source_in_prefix = true
 reveal_hidden_cursor_for_cjk_ime = true
 cjk_ime_agents = ["claude", "copilot"]
 # cjk_ime_cursor_shape = "steady_block"  # block / underline / bar 系も指定可
+
+[ui]
+agent_panel_sort = "priority"
