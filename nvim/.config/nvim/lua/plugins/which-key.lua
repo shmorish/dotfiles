@@ -29,6 +29,7 @@ local ja = {
   ["noice"] = "通知 (noice)",
 
   -- ファイル・検索
+  ["Smart Find Files"] = "ファイル検索（履歴優先）",
   ["Find Files (Root Dir)"] = "ファイル検索（ルート）",
   ["Find Files (cwd)"] = "ファイル検索（カレント）",
   ["Find Files (git-files)"] = "ファイル検索（git 管理下）",
