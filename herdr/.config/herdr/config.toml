@@ -17,3 +17,8 @@ cjk_ime_agents = ["claude", "copilot"]
 
 [ui]
 agent_panel_sort = "priority"
+
+# 新規タブ作成時に名前を聞かない。
+# タブ名は zsh のフック (zsh/.config/zsh/config/herdr.zsh) が
+# 実行中のコマンド名に自動で書き換えるため、入力する意味がない。
+prompt_new_tab_name = false
