@@ -15,16 +15,51 @@ if [[ -n "$HERDR_TAB_ID" ]] && (( $+commands[herdr] )); then
     herdr tab rename "$HERDR_TAB_ID" "$1" >/dev/null 2>&1 &!
   }
 
-  # 実行するコマンド名（sudo / env などは次の語を見る）
+  # ジョブ指定 (%1, %+, %vim など) から元のコマンド行を REPLY に入れる
+  # サブシェルではジョブテーブルが見えないため $(...) は使わない
+  _herdr_job_text() {
+    local spec="${1:-%+}" n
+    REPLY=""
+    case "$spec" in
+      ""|%%|%+)
+        for n in ${(k)jobstates}; do
+          [[ "${${(s.:.)jobstates[$n]}[2]}" == "+" ]] && { REPLY="${jobtexts[$n]}"; return }
+        done ;;
+      %-)
+        for n in ${(k)jobstates}; do
+          [[ "${${(s.:.)jobstates[$n]}[2]}" == "-" ]] && { REPLY="${jobtexts[$n]}"; return }
+        done ;;
+      %<->|<->)
+        REPLY="${jobtexts[${spec#%}]}" ;;
+      %*)
+        for n in ${(k)jobtexts}; do
+          [[ "${jobtexts[$n]}" == "${spec#%}"* ]] && { REPLY="${jobtexts[$n]}"; return }
+        done ;;
+    esac
+  }
+
   _herdr_preexec() {
     local -a words
     words=(${(z)1})
+
+    # fg / %1 は再開するジョブのコマンド名を使う
+    if [[ "${words[1]}" == "fg" || "${words[1]}" == %* ]]; then
+      if [[ "${words[1]}" == %* ]]; then
+        _herdr_job_text "${words[1]}"
+      else
+        _herdr_job_text "${words[2]}"
+      fi
+      [[ -n "$REPLY" ]] && words=(${(z)REPLY})
+    fi
+
+    # sudo / env などは読み飛ばして実体のコマンド名を取る
     local cmd="${words[1]:t}"
     while [[ "$cmd" == (sudo|env|command|nohup|time) && ${#words} -gt 1 ]]; do
       shift words
       cmd="${words[1]:t}"
     done
-    _herdr_set_tab "$cmd"
+
+    [[ -n "$cmd" ]] && _herdr_set_tab "$cmd"
   }
 
   # コマンドが終わったらカレントディレクトリ名に戻す
