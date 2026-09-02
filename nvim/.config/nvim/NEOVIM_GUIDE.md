@@ -270,6 +270,7 @@ nvim/.config/nvim/
         ├── which-key.lua       # which-key のラベルを日本語化
         ├── autosave.lua        # 自動保存（auto-save.nvim）
         ├── lsp.lua             # Mason で管理する LSP サーバーの宣言
+        ├── lualine.lua         # モード表示を色付きの記号に
         └── markdown.lua        # markdown の lint を無効化（整形は prettier）
 ```
 
@@ -282,6 +283,7 @@ nvim/.config/nvim/
 | 全角スペース         | `Space`（leader）として扱う                                                                                                              |
 | 配色                 | kanagawa-dragon。背景は透過せず既定より一段暗い `#121111` を使用                                                                         |
 | ファイラ             | 隠しファイル・gitignore 済みも全部表示（`H` / `I` でトグル）。`<BS>` は開いたときのルートより上に行かない。cwd 基準の `Space E` は無効化 |
+| ステータスライン     | 左端のモード表示を `NORMAL` の文字ではなく色付きの記号に（旧設定と同じ配色）                                                             |
 | which-key            | `Space` を押したときのラベルを日本語表示（未登録の項目は英語のまま）                                                                     |
 | `f` `t` `F` `T`      | hop.nvim の画面内ジャンプに置換（flash の f/t 拡張は無効化）                                                                             |
 | 自動保存             | 編集停止 1 秒後に保存（auto-save.nvim / `:ASToggle` で一時停止・gitcommit は対象外）                                                     |
