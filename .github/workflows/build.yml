@@ -7,40 +7,19 @@ on:
   # pull_request:
   #   branches: [ main ]
 
-permissions:
-  pull-requests: write
-
 jobs:
-  test:
+  check:
+    # aarch64-darwin 向け設定なので Apple Silicon ランナーで評価する
     runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v6
-      with:
-        path: dotfiles
-        submodules: recursive
 
-    - name: Monitor Workflow Performance
-      uses: ke-kawai/workflow-performance-monitor@v1.0.0
+    - uses: DeterminateSystems/nix-installer-action@main
 
-    - name: Move repository to HOME directory
-      run: |
-        mv dotfiles $HOME/dotfiles
+    - name: Check flake
+      run: nix flake check --no-build
 
-    - name: Run setup
-      run: |
-        cd $HOME/dotfiles
-        make setup
-      shell: zsh {0}
-
-    - name: Run ls to verify dotfiles
-      run: |
-        ls -la $HOME/.zshrc $HOME/.vimrc $HOME/.gitconfig $HOME/.nvm
-        ls -laR $HOME/.config
-      shell: zsh {0}
-    
-    - name: Run cleanup
-      run: |
-        cd $HOME/dotfiles
-        make clean
-      shell: zsh {0}
+    # wezterm はソースビルドになるので CI では評価とキャッシュ照会のみ (--dry-run)
+    - name: Evaluate Home Manager configuration
+      run: nix build .#homeConfigurations.sh-morishita.activationPackage --dry-run

@@ -296,7 +296,7 @@ nvim/.config/nvim/
 
 ## 7. 差分を見る（hunk CLI）
 
-差分の確認は Neovim ではなく **`hunk`**（Homebrew で入れた TUI diff ビューア）に任せています。
+差分の確認は Neovim ではなく **`hunk`**（Nix で入れた TUI diff ビューア）に任せています。
 `~/.gitconfig` の設定はこれだけです。
 
 ```ini
