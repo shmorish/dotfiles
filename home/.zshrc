@@ -4,16 +4,16 @@
 
 # Nix / Home Manager
 # - /etc/zshrc への追記は macOS アップデートで消えることがあるので自分で読む
-# - integer 型の変数 i が残っていると nix-daemon.sh 内の for ループが落ちるので先に unset
-# - 親シェルで読み込み済み扱い (__ETC_PROFILE_NIX_SOURCED) の子シェルでも PATH は保証する
-if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-  unset i
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
-case ":$PATH:" in
-  *":$HOME/.nix-profile/bin:"*) ;;
-  *) export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH" ;;
-esac
+# - nix-daemon.sh はループ変数 i をグローバルに使うため、無名関数内で local にして隔離する
+#   (外側で i が integer 型だとスクリプトが落ちる。外側の i には触れない)
+() {
+  local i
+  [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+}
+# 親シェルで読み込み済み扱い (__ETC_PROFILE_NIX_SOURCED) の子シェルでも PATH を保証する。
+# path は typeset -U で重複が自動除去されるので何度通っても増えない。
+typeset -U path
+path=("$HOME/.nix-profile/bin" /nix/var/nix/profiles/default/bin $path)
 [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
 # bun completions
