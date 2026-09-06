@@ -49,13 +49,16 @@ make nix-uninstall  # Nix 本体を完全に削除する (端末返却時など)
 
 ```
 flake.nix        # inputs (nixpkgs, home-manager, wezterm) と homeConfigurations
-home/
-  default.nix    # ユーザー情報、stateVersion
-  packages.nix   # CLI ツールとランタイム
-  apps.nix       # GUI アプリとフォント
-  dotfiles.nix   # 各ディレクトリの設定ファイルを ~/ や ~/.config へリンク
-  gc.nix         # 週次のガベージコレクション
-zsh/ git/ nvim/ wezterm/ zed/ karabiner/ herdr/ vim/   # 設定ファイル本体
+nix/             # Home Manager モジュール
+  default.nix    #   ユーザー情報、stateVersion
+  packages.nix   #   CLI ツールとランタイム
+  apps.nix       #   GUI アプリとフォント
+  java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
+  dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
+  gc.nix         #   週次のガベージコレクション
+home/            # ~/ 直下に置くファイル (.zshrc, .gitconfig, .vimrc)
+config/          # ~/.config/ 配下 (zsh, nvim, wezterm, karabiner, zed, herdr, ...)
+.bin/            # セットアップスクリプト
 ```
 
 設定ファイルは Nix store にコピーせず、リポジトリ実体への symlink として配置されます。

@@ -252,7 +252,7 @@ Vim の編集は **動詞（operator）+ 範囲（motion / text object）** の�
 ## 6. この設定のファイル構成
 
 ```text
-nvim/.config/nvim/
+config/nvim/
 ├── init.lua                    # 入口（config.lazy を呼ぶだけ）
 ├── lazyvim.json                # 有効にしている extras（:LazyExtras で編集）
 ├── lazy-lock.json              # プラグインのバージョン固定（git 管理する）
