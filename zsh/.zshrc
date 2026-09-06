@@ -3,8 +3,17 @@
 # ---------------------------------- #
 
 # Nix / Home Manager
-# /etc/zshrc への追記は macOS アップデートで消えることがあるので自分で読む
-[ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# - /etc/zshrc への追記は macOS アップデートで消えることがあるので自分で読む
+# - integer 型の変数 i が残っていると nix-daemon.sh 内の for ループが落ちるので先に unset
+# - 親シェルで読み込み済み扱い (__ETC_PROFILE_NIX_SOURCED) の子シェルでも PATH は保証する
+if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+  unset i
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+case ":$PATH:" in
+  *":$HOME/.nix-profile/bin:"*) ;;
+  *) export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH" ;;
+esac
 [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
 # bun completions
