@@ -6,6 +6,7 @@
     ./dotfiles.nix
     ./java.nix
     ./git.nix
+    ./direnv.nix
     ./gc.nix
   ];
 

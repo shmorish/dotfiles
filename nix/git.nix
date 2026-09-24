@@ -36,6 +36,9 @@
       ".DS_Store"
       "**/.claude/settings.local.json"
       "**/.claude/settings.json"
+      # direnv (会社リポジトリを汚さないようグローバルで無視)
+      ".envrc"
+      ".direnv/"
     ];
   };
 }

@@ -33,3 +33,6 @@ eval "$(starship init zsh)"
 export OPENSPEC_TELEMETRY=0
 
 export PATH=$PATH:$HOME/.maestro/bin
+
+# direnv (プロンプトを変更するものより後に置く)
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
