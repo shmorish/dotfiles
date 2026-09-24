@@ -1,3 +1,4 @@
+onboarding = false
 # herdr config
 # キーバインドはデフォルトを覚える方針なので [keys] は書かない。
 # 実際に効いているバインドは ctrl+b -> ? で確認できる。
