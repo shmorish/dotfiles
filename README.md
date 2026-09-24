@@ -54,10 +54,11 @@ nix/             # Home Manager モジュール
   packages.nix   #   CLI ツールとランタイム
   apps.nix       #   GUI アプリとフォント
   java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
+  git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
   dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
   gc.nix         #   週次のガベージコレクション
-home/            # ~/ 直下に置くファイル (.zshrc, .gitconfig, .vimrc)
-config/          # ~/.config/ 配下 (zsh, nvim, wezterm, karabiner, zed, herdr, ...)
+home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
+config/          # ~/.config/ 配下 (zsh, nvim, wezterm, karabiner, zed, herdr, ...)。git は git.nix で生成
 .bin/            # セットアップスクリプト
 ```
 

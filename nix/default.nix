@@ -5,6 +5,7 @@
     ./apps.nix
     ./dotfiles.nix
     ./java.nix
+    ./git.nix
     ./gc.nix
   ];
 

@@ -9,7 +9,6 @@ let
   # ~/ 直下に置くファイル (home/ 配下と同名)
   homeFiles = [
     ".zshrc"
-    ".gitconfig"
     ".vimrc"
   ];
 
@@ -26,7 +25,6 @@ let
   configFiles = [
     "starship.toml"
     "sheldon/plugins.toml"
-    "git/ignore"
     "zed/settings.json"
     "zed/keymap.json"
     "herdr/config.toml"
