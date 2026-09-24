@@ -1,13 +1,11 @@
 #!/bin/zsh
 
-# Homebrew wrapper
-brew() {
-  command brew "$@"
-  if [[ "$1" == "install" || "$1" == "uninstall" ]]; then
-    echo "Refreshing completions..."
-    rm -f ${HOME}/.zcompdump*
-    compinit
-  fi
+# Home Manager: 再適用して補完キャッシュを作り直す
+hms() {
+  home-manager switch --flake "$HOME/dotfiles" "$@" || return $?
+  echo "Refreshing completions..."
+  rm -f ${HOME}/.zcompdump*
+  compinit
 }
 
 # zsh utilities

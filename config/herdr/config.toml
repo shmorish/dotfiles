@@ -1,3 +1,4 @@
+onboarding = false
 # herdr config
 # キーバインドはデフォルトを覚える方針なので [keys] は書かない。
 # 実際に効いているバインドは ctrl+b -> ? で確認できる。
@@ -19,6 +20,6 @@ cjk_ime_agents = ["claude", "copilot"]
 agent_panel_sort = "priority"
 
 # 新規タブ作成時に名前を聞かない。
-# タブ名は zsh のフック (zsh/.config/zsh/config/herdr.zsh) が
+# タブ名は zsh のフック (config/zsh/config/herdr.zsh) が
 # 実行中のコマンド名に自動で書き換えるため、入力する意味がない。
 prompt_new_tab_name = false
