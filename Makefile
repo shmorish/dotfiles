@@ -17,6 +17,7 @@ setup:
 	@[ -x /nix/nix-installer ] || curl --proto '=https' --tlsv1.2 -fsSL https://install.determinate.systems/nix | sh -s -- install
 	@$(MAKE) switch
 	@launchctl disable $(RCD); launchctl kill SIGTERM $(RCD) 2>/dev/null || true
+	@defaults write org.alacritty AppleFontSmoothing -int 0  # CoreText の太らせ描画を切る (WezTerm と同じ見え方)
 
 switch:
 	@$(NIX) nix run home-manager -- switch --flake $(DOTFILES) -b backup
