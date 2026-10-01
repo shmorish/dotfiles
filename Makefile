@@ -12,7 +12,7 @@ help:
 	@echo "  switch         - Re-apply Home Manager configuration"
 	@echo "  clean          - home-manager uninstall + re-enable rcd (keeps Nix)"
 	@echo "  nix-uninstall  - /nix/nix-installer uninstall"
-	@echo "  macos-keys     - fn keys standard, Option+L lock screen, F3 clipboard screenshot"
+	@echo "  macos-keys     - fn keys standard, F3 clipboard screenshot"
 
 setup:
 	@[ -x /nix/nix-installer ] || curl --proto '=https' --tlsv1.2 -fsSL https://install.determinate.systems/nix | sh -s -- install
@@ -24,7 +24,6 @@ setup:
 # キーボード周り (旧 Karabiner の置き換え。Caps Lock の英数かな切り替えは macOS 既定で済む)
 macos-keys:
 	@defaults write -g com.apple.keyboard.fnState -bool true
-	@defaults write -g NSUserKeyEquivalents -dict-add "画面をロック" "~l"
 	@defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 31 '<dict><key>enabled</key><true/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>99</integer><integer>8388608</integer></array></dict></dict>'
 	@/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
