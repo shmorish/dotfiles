@@ -1,37 +1,29 @@
-help:
-	@echo "Available targets:"
-	@echo "  setup          - Install Nix (Determinate installer) and apply Home Manager"
-	@echo "  switch         - Re-apply Home Manager configuration"
-	@echo "  clean          - Remove Home Manager symlinks/profile (keeps Nix)"
-	@echo "  nix-uninstall  - Completely remove Nix (/nix/nix-installer uninstall)"
-	@echo "  help           - Show this help message"
-.PHONY: help
+# すべて ~/dotfiles を絶対パスで参照するので、どのディレクトリからでも実行できる。
+DOTFILES := $(HOME)/dotfiles
+# make は非対話シェルで動くため、Nix 直後のシェルでも PATH が通るよう毎回 source する。
+NIX_SH := /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+NIX := [ -e $(NIX_SH) ] && . $(NIX_SH);
+RCD := gui/$(shell id -u)/com.apple.rcd
 
-define require_dotfiles_dir
-	@if [ "$$(pwd)" != "${HOME}/dotfiles" ]; then \
-		echo "Error: Please run from ${HOME}/dotfiles"; \
-		exit 1; \
-	fi
-endef
+.PHONY: help setup switch clean nix-uninstall
+
+help:
+	@echo "  setup          - Install Nix (Determinate) + home-manager switch + disable rcd"
+	@echo "  switch         - Re-apply Home Manager configuration"
+	@echo "  clean          - home-manager uninstall + re-enable rcd (keeps Nix)"
+	@echo "  nix-uninstall  - /nix/nix-installer uninstall"
 
 setup:
-	@echo "Setting up the environment..."
-	$(require_dotfiles_dir)
-	@zsh .bin/setup_mac.sh
-.PHONY: setup
+	@[ -x /nix/nix-installer ] || curl --proto '=https' --tlsv1.2 -fsSL https://install.determinate.systems/nix | sh -s -- install
+	@$(MAKE) switch
+	@launchctl disable $(RCD); launchctl kill SIGTERM $(RCD) 2>/dev/null || true
 
 switch:
-	$(require_dotfiles_dir)
-	@zsh -c '. .bin/scripts/nix.sh && home_manager_switch'
-.PHONY: switch
+	@$(NIX) nix run home-manager -- switch --flake $(DOTFILES) -b backup
 
 clean:
-	@echo "Removing Home Manager configuration..."
-	$(require_dotfiles_dir)
-	@zsh .bin/unset_mac.sh
-.PHONY: clean
+	@$(NIX) nix run home-manager -- uninstall
+	@launchctl enable $(RCD)
 
 nix-uninstall:
-	$(require_dotfiles_dir)
-	@zsh -c '. .bin/scripts/nix.sh && uninstall_nix'
-.PHONY: nix-uninstall
+	/nix/nix-installer uninstall
