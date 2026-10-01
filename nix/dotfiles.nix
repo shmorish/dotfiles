@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   # stow の置き換え。store にコピーせずリポジトリ実体へ symlink するので、
-  # nvim や karabiner の自己書き込みも動き、編集は即反映 (ファイル追加時だけ `make switch`)。
+  # nvim (lazy-lock.json) などの自己書き込みも動き、編集は即反映 (ファイル追加時だけ `make switch`)。
   link = prefix: names: lib.genAttrs names (n: {
     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/${prefix}/${n}";
   });
