@@ -31,3 +31,8 @@ docker_remove_all () {
 docker_delete_cache () {
   docker system prune -a --volumes
 }
+
+# 旧案件用 (nixpkgs に node 12 は無い)
+docker_node_12 () {
+  docker run -it --rm -v "$(pwd):/app" -w /app node:12 bash
+}
