@@ -37,6 +37,21 @@ nix flake update wezterm                # wezterm を更新したいときだけ
 make switch
 ```
 
+## プロジェクトごとの Node 切り替え
+
+`flake.nix` の `devShells` に `node22` / `node24` / `node26` を定義しています。
+プロジェクトのルートに `.envrc` を置くと、そのディレクトリに入ったときだけ direnv が PATH を差し替えます。
+
+```bash
+cd ~/Work/some-project
+echo 'use flake ~/dotfiles#node22' > .envrc
+direnv allow
+node --version   # v22.x
+```
+
+`.envrc` と `.direnv/` はグローバルの gitignore で無視されるので、リポジトリには残りません。
+その場限りで試すだけなら `nix shell nixpkgs#nodejs_22` でも切り替えられます。
+
 ## アンインストール方法
 
 ```bash
@@ -55,6 +70,7 @@ nix/             # Home Manager モジュール
   apps.nix       #   GUI アプリとフォント
   java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
+  direnv.nix     #   direnv + nix-direnv
   dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
   gc.nix         #   週次のガベージコレクション
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
