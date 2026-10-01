@@ -6,8 +6,6 @@ oh-my-zsh/
 # nvim swap files
 *.swp
 
-# karabiner auto-generated backups
-config/karabiner/automatic_backups/
 
 
 # nix build output
