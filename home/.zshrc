@@ -23,6 +23,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # sheldon
 eval "$(sheldon source)"
+source <(fzf --zsh)
 
 for f in "$HOME"/.config/zsh/config/*.zsh; do source "$f"; done
 

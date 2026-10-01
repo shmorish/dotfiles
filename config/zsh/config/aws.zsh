@@ -26,24 +26,27 @@ function aws-login() {
     esac
 }
 
+# ~/.aws/config の profile を fzf で選ぶ (fzf が無ければ入力)。選択結果を stdout に返す
+function _aws_select_profile() {
+    local profiles name
+    profiles=$(grep '^\[' ~/.aws/config 2>/dev/null | sed 's/^\[profile //;s/^\[//;s/\]$//' | grep -v '^default$')
+    if [[ -n "$profiles" ]] && command -v fzf &>/dev/null; then
+        name=$(echo "$profiles" | fzf --prompt="Select AWS profile: " --height=40% --reverse)
+    else
+        printf 'Enter AWS profile name: ' >/dev/tty
+        read -r name </dev/tty
+    fi
+    [[ -n "$name" ]] || { echo "Profile name cannot be empty." >&2; return 1; }
+    echo "$name"
+}
+
 # AWS CLI MFA Login
 # 前提条件:
 # ~/.aws/config に mfa_serial が設定されていること
 # ~/.aws/credentials に aws_access_key_id と aws_secret_access_key が設定されていること
 function aws_login_mfa() {
     local profile_name
-    local profiles
-    profiles=$(grep '^\[' ~/.aws/config 2>/dev/null | sed 's/^\[profile //;s/^\[//;s/\]$//' | grep -v '^default$')
-    if [[ -n "$profiles" ]] && command -v fzf &>/dev/null; then
-        profile_name=$(echo "$profiles" | fzf --prompt="Select AWS profile: " --height=40% --reverse)
-    else
-        printf 'Enter AWS profile name: ' >/dev/tty
-        read -r profile_name </dev/tty
-    fi
-    if [[ -z "$profile_name" ]]; then
-        echo "Profile name cannot be empty." >&2
-        return 1
-    fi
+    profile_name=$(_aws_select_profile) || return 1
     local mfa_serial
     mfa_serial=$(aws configure get "profile.${profile_name}.mfa_serial")
     if [[ -z "$mfa_serial" ]]; then
@@ -92,18 +95,7 @@ function aws_logout_mfa() {
 # Open https://{AccountID}.signin.aws.amazon.com/console in browser
 function aws_login_web() {
     local profile_name
-    local profiles
-    profiles=$(grep '^\[' ~/.aws/config 2>/dev/null | sed 's/^\[profile //;s/^\[//;s/\]$//' | grep -v '^default$')
-    if [[ -n "$profiles" ]] && command -v fzf &>/dev/null; then
-        profile_name=$(echo "$profiles" | fzf --prompt="Select AWS profile: " --height=40% --reverse)
-    else
-        printf 'Enter AWS profile name: ' >/dev/tty
-        read -r profile_name </dev/tty
-    fi
-    if [[ -z "$profile_name" ]]; then
-        echo "Profile name cannot be empty." >&2
-        return 1
-    fi
+    profile_name=$(_aws_select_profile) || return 1
     local account_id
     account_id=$(aws sts get-caller-identity --profile "$profile_name" --query 'Account' --output text)
     if [[ $? -ne 0 ]]; then
