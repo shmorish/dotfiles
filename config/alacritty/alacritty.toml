@@ -11,7 +11,7 @@ option_as_alt = "Both"       # Option を Meta として送る (zsh の alt 系 
 size = 15
 
 [font.normal]
-family = "HackGen Console NF"
+family = "Hack Nerd Font Mono"
 style = "Bold"
 
 [colors.primary]
