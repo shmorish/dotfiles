@@ -19,7 +19,3 @@ jobs:
 
     - name: Check flake
       run: nix flake check --no-build
-
-    # wezterm はソースビルドになるので CI では評価とキャッシュ照会のみ (--dry-run)
-    - name: Evaluate Home Manager configuration
-      run: nix build .#homeConfigurations.sh-morishita.activationPackage --dry-run

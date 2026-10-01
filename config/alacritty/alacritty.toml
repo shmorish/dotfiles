@@ -1,0 +1,18 @@
+# タブ・ペインは herdr が担うので、ここは見た目だけ。
+
+[window]
+decorations = "Buttonless"   # タイトルバー非表示
+opacity = 0.75
+blur = true
+startup_mode = "Maximized"
+option_as_alt = "Both"       # Option を Meta として送る (zsh の alt 系 widget 用)
+
+[font]
+size = 15
+
+[font.normal]
+family = "HackGen Console NF"
+style = "Bold"
+
+[colors.primary]
+background = "#000000"

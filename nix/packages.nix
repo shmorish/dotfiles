@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     # shell
@@ -10,7 +10,6 @@
     # mobile / JVM
     ktlint ktfmt swiftformat scrcpy android-tools tuist
     # GUI / font。.app は ~/Applications/Home Manager Apps、font は ~/Library/Fonts/HomeManager に HM が配置
-    inputs.wezterm.packages.${stdenv.hostPlatform.system}.default
-    claude-code github-copilot-cli hackgen-nf-font
+    alacritty claude-code github-copilot-cli hackgen-nf-font
   ];
 }
