@@ -7,10 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # wezterm nightly (公式 flake)。main ブランチをビルドする。
-    # macOS 向けのバイナリキャッシュは無いのでローカルでソースビルドになる。
-    # 更新は `nix flake update wezterm` で明示的に行う。
-    wezterm.url = "github:wezterm/wezterm?dir=nix";
   };
 
   outputs =

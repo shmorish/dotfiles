@@ -22,7 +22,6 @@ make setup
 2. `home-manager switch --flake ~/dotfiles` で設定ファイルの symlink とパッケージを適用
 3. `com.apple.rcd` を無効化 (メディアキーで Music.app が起動しないようにする)
 
-初回は wezterm (nightly) をソースからビルドするため時間がかかります。
 
 ## 設定を変更したとき
 
@@ -33,8 +32,7 @@ make switch   # または zsh 上で hms
 ## 依存パッケージの更新
 
 ```bash
-nix flake update nixpkgs home-manager   # 通常はこちら
-nix flake update wezterm                # wezterm を更新したいときだけ (再ビルドが走る)
+nix flake update
 make switch
 ```
 
@@ -64,7 +62,7 @@ make nix-uninstall  # Nix 本体を完全に削除する (端末返却時など)
 ## 構成
 
 ```
-flake.nix        # inputs (nixpkgs, home-manager, wezterm) と homeConfigurations
+flake.nix        # inputs (nixpkgs, home-manager) と homeConfigurations
 nix/             # Home Manager モジュール
   default.nix    #   ユーザー情報、direnv、週次 GC
   packages.nix   #   CLI / GUI / font のパッケージ一覧
@@ -72,7 +70,7 @@ nix/             # Home Manager モジュール
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
   dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
-config/          # ~/.config/ 配下 (zsh, nvim, wezterm, karabiner, zed, herdr, ...)。git は git.nix で生成
+config/          # ~/.config/ 配下 (zsh, nvim, alacritty, karabiner, zed, herdr, ...)。git は git.nix で生成
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 

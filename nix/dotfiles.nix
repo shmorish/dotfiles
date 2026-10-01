@@ -10,7 +10,7 @@ in
   home.file = link "home" [ ".zshrc" ".vimrc" ];
   xdg.configFile = link "config" [
     # ディレクトリごと
-    "zsh" "bat" "nvim" "wezterm" "karabiner"
+    "zsh" "bat" "nvim" "alacritty" "karabiner"
     # ファイル単位 (同じディレクトリにアプリ自身が書くファイルがある)
     "starship.toml" "sheldon/plugins.toml" "zed/settings.json" "zed/keymap.json" "herdr/config.toml"
   ];
