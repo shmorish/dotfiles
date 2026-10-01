@@ -1,21 +1,24 @@
 { username, ... }:
 {
-  imports = [
-    ./packages.nix
-    ./apps.nix
-    ./dotfiles.nix
-    ./java.nix
-    ./git.nix
-    ./direnv.nix
-    ./gc.nix
-  ];
+  imports = [ ./packages.nix ./dotfiles.nix ./git.nix ./java.nix ];
 
   home.username = username;
   home.homeDirectory = "/Users/${username}";
+  home.stateVersion = "26.05"; # 初回導入時の HM リリース。変更しない
 
-  # 初回導入時の Home Manager リリース。挙動の互換性判定に使われるだけなので変更しない。
-  home.stateVersion = "26.05";
-
-  # home-manager CLI をプロファイルに入れる (`home-manager switch --flake ~/dotfiles`)
   programs.home-manager.enable = true;
+
+  # .envrc の `use flake ~/dotfiles#node22` 用。hook は home/.zshrc に直書き
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    silent = true;
+  };
+
+  # /nix 肥大化対策。週次で 14 日より古い世代を回収
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
 }

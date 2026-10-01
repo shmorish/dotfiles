@@ -17,14 +17,14 @@ path=("$HOME/.nix-profile/bin" /nix/var/nix/profiles/default/bin $path)
 [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
 # bun completions
-[ -s "/Users/sh-morishita/.bun/_bun" ] && source "/Users/sh-morishita/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # sheldon
 eval "$(sheldon source)"
 
-source $HOME/.config/zsh/init.zsh
+for f in "$HOME"/.config/zsh/config/*.zsh; do source "$f"; done
 
 # starship
 eval "$(starship init zsh)"

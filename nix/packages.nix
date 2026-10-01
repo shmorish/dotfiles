@@ -1,57 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
-  # CLI ツール (旧 Brewfile の formula) と言語ランタイム (旧 mise / nvm)
   home.packages = with pkgs; [
     # shell
-    sheldon
-    starship
-    bat
-    fd
-    ripgrep
-    tree
-    watch
-    wget
-    htop
-    gping
-    httpie
-
+    sheldon starship bat eza fd ripgrep tree watch wget htop gping httpie glow
     # dev
-    neovim
-    gh
-    lazygit
-    nb
-    cmake
-    gnumake
-    clang-tools # clang-format
-
-    # runtimes
-    nodejs_latest
-    python3
-    lua
-    perl
-    ruby
-
-    # 旧 Homebrew 直接インストール分 (Brewfile 外)
-    eza
-    glow
-    helix
-    aws-vault
-    hunk
-    treemd
-    tuicr
-
-    # JS / Python toolchain
-    pnpm
-    yarn
-    deno
-    uv
-
+    neovim helix gh lazygit hunk treemd tuicr nb aws-vault cmake gnumake clang-tools
+    # runtimes / toolchains (プロジェクト別の node は flake.nix の devShells)
+    nodejs_latest pnpm yarn deno python3 uv lua perl ruby
     # mobile / JVM
-    ktlint
-    ktfmt
-    swiftformat
-    scrcpy
-    android-tools
-    tuist
+    ktlint ktfmt swiftformat scrcpy android-tools tuist
+    # GUI / font。.app は ~/Applications/Home Manager Apps、font は ~/Library/Fonts/HomeManager に HM が配置
+    inputs.wezterm.packages.${stdenv.hostPlatform.system}.default
+    claude-code github-copilot-cli hackgen-nf-font
   ];
 }
