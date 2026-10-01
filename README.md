@@ -21,6 +21,7 @@ make setup
 1. Nix が無ければ [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer) でインストール
 2. `home-manager switch --flake ~/dotfiles` で設定ファイルの symlink とパッケージを適用
 3. `com.apple.rcd` を無効化 (メディアキーで Music.app が起動しないようにする)
+4. キーボード設定 (`make macos-keys`): fn キーを標準に、Option+L で画面ロック、F3 で選択範囲をクリップボードへスクショ
 
 
 ## 設定を変更したとき
@@ -70,7 +71,7 @@ nix/             # Home Manager モジュール
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
   dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
-config/          # ~/.config/ 配下 (zsh, nvim, alacritty, karabiner, zed, herdr, ...)。git は git.nix で生成
+config/          # ~/.config/ 配下 (zsh, nvim, alacritty, zed, herdr, ...)。git は git.nix で生成
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 
