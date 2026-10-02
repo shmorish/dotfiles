@@ -21,7 +21,7 @@ make setup
 1. Nix が無ければ [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer) でインストール
 2. `home-manager switch --flake ~/dotfiles` で設定ファイルの symlink とパッケージを適用
 3. `com.apple.rcd` を無効化 (メディアキーで Music.app が起動しないようにする)
-4. キーボード設定 (`make macos-keys`): fn キーを標準に、F3 で選択範囲をクリップボードへスクショ。画面ロックは既定の Ctrl+⌘+Q (アップルメニュー項目は defaults で上書き不可)
+4. macOS の設定: fn キーを標準に、F3 で選択範囲をクリップボードへスクショ。画面ロックは既定の Ctrl+⌘+Q (アップルメニュー項目は defaults で上書き不可)
 
 
 ## 設定を変更したとき
