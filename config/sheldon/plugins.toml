@@ -27,5 +27,3 @@ github = "zsh-users/zsh-autosuggestions"
 apply = ["defer"]
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
-[plugins.zeno]
-github = "yuki-yano/zeno.zsh"
