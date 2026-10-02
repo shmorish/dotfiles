@@ -12,6 +12,6 @@ in
     # ディレクトリごと
     "zsh" "bat" "nvim" "alacritty"
     # ファイル単位 (同じディレクトリにアプリ自身が書くファイルがある)
-    "starship.toml" "sheldon/plugins.toml" "zed/settings.json" "zed/keymap.json" "herdr/config.toml"
+    "starship.toml" "sheldon/plugins.toml" "herdr/config.toml"
   ];
 }
