@@ -71,7 +71,7 @@ nix/             # Home Manager モジュール
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
   dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
-config/          # ~/.config/ 配下 (zsh, nvim, alacritty, zed, herdr, ...)。git は git.nix で生成
+config/          # ~/.config/ 配下 (zsh, nvim, alacritty, herdr, ...)。git は git.nix で生成
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 
