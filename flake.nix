@@ -16,7 +16,7 @@
       username = "sh-morishita";
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true; # claude-code, github-copilot-cli
+        config.allowUnfree = true; # claude-code, github-copilot-cli, postman
       };
     in
     {
