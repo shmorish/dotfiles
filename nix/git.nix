@@ -12,6 +12,7 @@
       };
 
       core.editor = "vim";
+      init.defaultBranch = "main";
 
       # PATH に依存せず Nix の hunk を直接参照する
       pager = {
