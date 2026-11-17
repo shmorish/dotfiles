@@ -4,6 +4,7 @@
 // switch, right-click for its menu, drag to reorder.
 
 import { View, div, svg } from "gpui-kit";
+import * as fs from "fs/promises";
 import { v_flex, h_flex } from "gpui-base";
 import { spaces, machines, panes, run, openOverlay, exec, hc, theme, shared, setShared, watchFolder, window, layout, home } from "herdr";
 
@@ -53,8 +54,9 @@ const project = (g) => {
   const main = repo.replace(/\/\.git$/, "");
   return JSON.stringify([on, main.slice(0, main.lastIndexOf("/")) || "/"]);
 };
-// 案件として見出しを付けるフォルダ。ここにないものは repo 単体で並ぶ。
-const PROJECTS = ["~/Work/mebs/BUILDAYS", "~/Work/3fguild", "~/subwork"];
+// 案件として見出しを付けるフォルダの一覧（例: ["~/Work/foo"]）。ここにないものは repo 単体で並ぶ。
+// 仕事の情報なので dotfiles には入れず、このマシンだけのファイルに置く。
+const PROJECTS_FILE = () => `${home()}/.config/herdr-app/projects.json`;
 const RANK = { blocked: 3, done: 2, working: 1 };
 const worst = (list) => list.reduce((a, s) => ((RANK[s] ?? 0) > (RANK[a] ?? 0) ? s : a), null);
 const mark = (s) => (s === "blocked" || s === "done" ? "●" : s === "working" ? "◐" : "");
@@ -80,11 +82,23 @@ export default class Spaces extends View {
     for (const state of Object.values(this.reconnecting)) state.busy = false;
     this.folded = new Set(JSON.parse(localStorage.getItem("machines.folded") ?? "[]"));
     this.projFolded = new Set(JSON.parse(localStorage.getItem("projects.folded") ?? "[]"));
+    this.projects = [];
+    this.loadProjects(cx);
+    cx.timer.every(5000, (cx) => this.loadProjects(cx));
     this.refreshMachines(cx);
     cx.timer.every(15000, cx => this.refreshMachines(cx));
     // `git status` walks the whole tree, on another machine a process there:
     // only when its answer could have changed (see `due`).
     cx.timer.every(250, (cx) => this.checkNew(cx));
+  }
+
+  // projects.json: missing or broken means no 案件 headers, not an error.
+  loadProjects(cx) {
+    cx.spawn(async (cx) => {
+      let list = [];
+      try { list = JSON.parse(await fs.readFile(PROJECTS_FILE(), "utf8")).map((d) => d.replace(/^~/, home())); } catch {}
+      if (JSON.stringify(list) !== JSON.stringify(this.projects)) { this.projects = list; cx.notify(); }
+    });
   }
 
   checkNew(cx) {
@@ -330,7 +344,7 @@ export default class Spaces extends View {
       return [...new Set(list.map((r) => r.proj))].flatMap((p) => {
         const mine = list.filter((r) => r.proj === p);
         const path = p ? JSON.parse(p)[1] : null;
-        if (!PROJECTS.some((d) => d.replace(/^~/, home()) === path)) return mine.map(one);
+        if (!this.projects.includes(path)) return mine.map(one);
         const lead = mine.find((r) => !r.g); // the 案件's own space, if one is open
         const rest = mine.filter((r) => r !== lead);
         const folded = this.projFolded.has(p);
