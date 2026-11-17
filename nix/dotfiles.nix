@@ -15,5 +15,6 @@ in
     "starship.toml" "sheldon/plugins.toml" "herdr/config.toml"
     # Herdr.app: 同梱の layouts/mods/themes は起動時に Herdr が上書きするので、自作分だけ足す
     "herdr-app/settings.json" "herdr-app/keys.json"
+    "herdr-app/layouts/work.json" "herdr-app/mods/projects"
   ];
 }
