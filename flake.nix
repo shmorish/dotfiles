@@ -26,9 +26,7 @@
         modules = [ ./nix ];
       };
 
-      # プロジェクトごとの Node 切り替え用。各プロジェクトの .envrc に
-      #   use flake ~/dotfiles#node22
-      # と書くと direnv がそのディレクトリだけ PATH を差し替える。
+      # プロジェクトごとの Node 切り替え用。`nix develop ~/dotfiles#node22` で入る。
       devShells.${system} =
         let
           nodeShell = nodejs: pkgs.mkShell {
