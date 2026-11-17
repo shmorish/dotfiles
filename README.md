@@ -40,16 +40,14 @@ make switch
 ## プロジェクトごとの Node 切り替え
 
 `flake.nix` の `devShells` に `node22` / `node24` / `node26` を定義しています。
-プロジェクトのルートに `.envrc` を置くと、そのディレクトリに入ったときだけ direnv が PATH を差し替えます。
+使うときは `nix develop` でシェルに入ります。
 
 ```bash
 cd ~/Work/some-project
-echo 'use flake ~/dotfiles#node22' > .envrc
-direnv allow
+nix develop ~/dotfiles#node22
 node --version   # v22.x
 ```
 
-`.envrc` と `.direnv/` はグローバルの gitignore で無視されるので、リポジトリには残りません。
 その場限りで試すだけなら `nix shell nixpkgs#nodejs_22` でも切り替えられます。
 
 ## アンインストール方法
@@ -65,7 +63,7 @@ make nix-uninstall  # Nix 本体を完全に削除する (端末返却時など)
 ```
 flake.nix        # inputs (nixpkgs, home-manager) と homeConfigurations
 nix/             # Home Manager モジュール
-  default.nix    #   ユーザー情報、direnv、週次 GC
+  default.nix    #   ユーザー情報、週次 GC
   packages.nix   #   CLI / GUI / font のパッケージ一覧
   java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
