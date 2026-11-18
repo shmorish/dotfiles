@@ -31,12 +31,12 @@ description: Herdr の案件フォルダ（複数 repo をまとめたディレ�
    ```
 4. **起動**: 作業役は Herdr の space として見えるように、未知の space/tab ID のラベルを付けて起動する（新しい space になり、親は自分として記録される）。続けて space に名前を付ける。
    ```sh
-   n=<repo>-<slug>
+   repo=<repo>; slug=<slug>; n="${repo}-${slug}"   # 変数は必ず ${} で囲む（zsh だと "$repo:c..." の :c が修飾子として消える）
    hc run --bg --outlive-parent --name "$n" --cwd "$PWD/wt-$n" \
      --label herdr.space="sp-$n" --label herdr.tab="tb-$n" \
      claude "<タスク>"
    # space ができるまで数秒かかるので、成功するまで試す
-   for i in 1 2 3 4 5 6 7 8 9 10; do herdr-app do space.rename --id "sp-$n" --name "<repo>:<slug>" >/dev/null 2>&1 && break; sleep 1; done
+   for i in 1 2 3 4 5 6 7 8 9 10; do herdr-app do space.rename --id "sp-$n" --name "${repo}:${slug}" >/dev/null 2>&1 && break; sleep 1; done
    ```
    起動直後に「このフォルダを信頼するか」で止まることがある（`hc read` で `trust this folder` が見える）。自分で作った worktree なので `hc keys "$n" down enter` で信頼して進める。タスクはその後に届く。
    `<タスク>` は次の順で書く: やること / 触ってよい範囲 / 完了条件（例: このブランチにコミットまで、push と PR はしない）/「作業役を増やさない」/「終わったら、または詰まったら hc send $HC_TERMINAL_ID で報告」。
