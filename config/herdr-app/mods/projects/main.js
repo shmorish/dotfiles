@@ -4,9 +4,22 @@
 // switch, right-click for its menu, drag to reorder.
 
 import { View, div, svg } from "gpui-kit";
-import * as fs from "fs/promises";
 import { v_flex, h_flex } from "gpui-base";
 import { spaces, machines, panes, run, openOverlay, exec, hc, theme, shared, setShared, watchFolder, window, layout, home } from "herdr";
+import * as fs from "fs/promises";
+// --- projects と board で同じもの。Herdr は mod のフォルダ外の import を許さないので、それぞれに置く ---
+// git を、index の lock も fsmonitor も触らずに呼ぶ（watch を起こさない・他の git とぶつからない）。`on`: 別マシンの名前
+const git = (cwd, args, on) => exec("git", ["--no-optional-locks", "-c", "core.fsmonitor=false", ...args], { cwd, on });
+// ~/.config/herdr-app/projects.json の案件フォルダ（~ を展開した絶対パス）。無い・壊れているときは []
+async function loadProjects() {
+  try {
+    return JSON.parse(await fs.readFile(`${home()}/.config/herdr-app/projects.json`, "utf8")).map((d) => d.replace(/^~/, home()));
+  } catch {
+    return [];
+  }
+}
+// --- ここまで ---
+
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -56,7 +69,6 @@ const project = (g) => {
 };
 // 案件として見出しを付けるフォルダの一覧（例: ["~/Work/foo"]）。ここにないものは repo 単体で並ぶ。
 // 仕事の情報なので dotfiles には入れず、このマシンだけのファイルに置く。
-const PROJECTS_FILE = () => `${home()}/.config/herdr-app/projects.json`;
 const RANK = { blocked: 3, done: 2, working: 1 };
 const worst = (list) => list.reduce((a, s) => ((RANK[s] ?? 0) > (RANK[a] ?? 0) ? s : a), null);
 const mark = (s) => (s === "blocked" || s === "done" ? "●" : s === "working" ? "◐" : "");
@@ -95,8 +107,7 @@ export default class Spaces extends View {
   // projects.json: missing or broken means no 案件 headers, not an error.
   loadProjects(cx) {
     cx.spawn(async (cx) => {
-      let list = [];
-      try { list = JSON.parse(await fs.readFile(PROJECTS_FILE(), "utf8")).map((d) => d.replace(/^~/, home())); } catch {}
+      const list = await loadProjects();
       if (JSON.stringify(list) !== JSON.stringify(this.projects)) { this.projects = list; cx.notify(); }
     });
   }
@@ -230,7 +241,7 @@ export default class Spaces extends View {
     try {
       // No optional locks: a status that touched the index would wake the watch again.
       // Writes nothing under .git (index lock, fsmonitor cookie): watch() would wake on it.
-      const r = await exec("git", ["--no-optional-locks", "-c", "core.fsmonitor=false", "status", "--porcelain=v2", "--branch"], { cwd, on });
+      const r = await git(cwd, ["status", "--porcelain=v2", "--branch"], on);
       if (r.code !== 0) {
         // Only git's own "no" is remembered as no repo; anything else is asked again.
         if (!/not a git repository/i.test(r.stderr)) this.unsure.add(key);
