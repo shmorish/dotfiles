@@ -4,13 +4,25 @@
 
 import { View, div } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
-import * as fs from "fs/promises";
 import { exec, panes, props, run, theme, home, focused } from "herdr";
+import * as fs from "fs/promises";
+// --- projects と board で同じもの。Herdr は mod のフォルダ外の import を許さないので、それぞれに置く ---
+// git を、index の lock も fsmonitor も触らずに呼ぶ（watch を起こさない・他の git とぶつからない）。`on`: 別マシンの名前
+const git = (cwd, args, on) => exec("git", ["--no-optional-locks", "-c", "core.fsmonitor=false", ...args], { cwd, on });
+// ~/.config/herdr-app/projects.json の案件フォルダ（~ を展開した絶対パス）。無い・壊れているときは []
+async function loadProjects() {
+  try {
+    return JSON.parse(await fs.readFile(`${home()}/.config/herdr-app/projects.json`, "utf8")).map((d) => d.replace(/^~/, home()));
+  } catch {
+    return [];
+  }
+}
+// --- ここまで ---
+
 
 const RANK = { blocked: 3, done: 2, working: 1, idle: 0 };
 const worst = (list) => list.reduce((a, s) => ((RANK[s] ?? -1) > (RANK[a] ?? -1) ? s : a), null);
 const tilde = (p) => (p.startsWith(home()) ? `~${p.slice(home().length)}` : p);
-const git = (cwd, args) => exec("git", ["--no-optional-locks", "-c", "core.fsmonitor=false", ...args], { cwd });
 
 // `git status --porcelain=v2 --branch` -> { branch, ahead, behind, dirty }
 function status(out) {
@@ -66,12 +78,11 @@ export default class Board extends View {
   async guess() {
     const cwd = focused()?.cwd;
     if (!cwd) return null;
-    let list = [];
-    try { list = JSON.parse(await fs.readFile(`${home()}/.config/herdr-app/projects.json`, "utf8")).map((d) => d.replace(/^~/, home())); } catch {}
+    const list = await loadProjects();
     const hit = list.find((d) => cwd === d || cwd.startsWith(`${d}/`));
     if (hit) return hit;
     try {
-      const r = await exec("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], { cwd });
+      const r = await git(cwd, ["rev-parse", "--path-format=absolute", "--git-common-dir"]);
       if (r.code === 0) {
         // 案件一覧の案件の repo（別の場所の worktree 含む）ならその案件、そうでなければ repo 単体
         const main = r.stdout.trim().replace(/\/\.git$/, "");
@@ -93,12 +104,18 @@ export default class Board extends View {
         for (const name of ls.stdout.split("\n").filter(Boolean)) {
           const path = name === "." ? dir : `${dir}/${name}`;
           const wl = await git(path, ["worktree", "list", "--porcelain"]);
+          // 既定ブランチ（origin/HEAD の先。例: origin/main）。worktree が取り込み済みかの判定に使う
+          const hd = await git(path, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]);
+          const base = hd.code === 0 ? hd.stdout.trim() : null;
           const checkouts = [];
           for (const block of wl.stdout.split(/\n\n+/)) {
             const p = block.split("\n").find((l) => l.startsWith("worktree "))?.slice(9);
             if (!p || /\n(bare|prunable)/.test(`\n${block}`)) continue;
             const st = await git(p, ["status", "--porcelain=v2", "--branch"]);
-            if (st.code === 0) checkouts.push({ path: p, main: p === path, ...status(st.stdout) });
+            if (st.code !== 0) continue;
+            // PR のブランチ名に頼らず中身で判定: 先頭のコミットが既定ブランチに含まれていれば取り込み済み
+            const merged = p !== path && Boolean(base) && (await git(p, ["merge-base", "--is-ancestor", "HEAD", base])).code === 0;
+            checkouts.push({ path: p, main: p === path, merged, ...status(st.stdout) });
           }
           repos.push({ name: path.split("/").pop(), path, checkouts });
         }
@@ -158,7 +175,7 @@ export default class Board extends View {
     const pr = c.branch && this.prs[r.path]?.[c.branch];
     const prColor = { OPEN: t.ansi2, DRAFT: t.dim, MERGED: t.ansi5, CLOSED: t.ansi1 }[pr?.state];
     const label = c.main ? c.branch ?? "(detached)" : `${c.branch ?? "(detached)"}  ${c.path.split("/").pop()}`;
-    const git = h_flex().gap(6).flex_none()
+    const gitEl = h_flex().gap(6).flex_none()
       .child(div().text_color(c.dirty ? t.ansi3 : t.dim).child(c.dirty ? `✎${c.dirty}` : "clean"))
       .when(c.ahead > 0, (el) => el.child(div().text_color(t.ansi2).child(`↑${c.ahead}`)))
       .when(c.behind > 0, (el) => el.child(div().text_color(t.ansi1).child(`↓${c.behind}`)));
@@ -168,9 +185,10 @@ export default class Board extends View {
         .hover((st) => st.bg(t.raised).text_color(t.foreground))
         .on_click((_e, cx) => { cx.stop_propagation(); run("space.new", { folder: c.path, argv: ["claude"] }); })
         .child("+ Claude");
-    const prEl = div().flex_none().text_color(prColor ?? t.dim).child(pr ? `#${pr.number} ${pr.state.toLowerCase()}` : "");
-    // PR がマージ済みで、そこで何も動いていない worktree だけ消せる。1 回目で確認表示、2 回目で実行
-    const removable = !c.main && !target && pr?.state === "MERGED";
+    const prEl = div().flex_none().text_color(prColor ?? (c.merged ? t.ansi5 : t.dim)).child(pr ? `#${pr.number} ${pr.state.toLowerCase()}` : c.merged ? "取り込み済み" : "");
+    // 中身が既定ブランチに入っている（または PR が merged）、未コミットの変更が無い、何も動いていない worktree だけ
+    const removable = !c.main && !target && !c.dirty && (c.merged || pr?.state === "MERGED");
+    // 1 回目で確認表示、2 回目で実行
     const armed = this.arming === c.path;
     const rm = div().id(`rm-${c.path}`).flex_none().px(6).rounded(4).text_size(11.5).cursor_pointer()
       .text_color(armed ? t.ansi1 : t.dim).when(armed, (el) => el.bg(t.raised))
@@ -181,8 +199,8 @@ export default class Board extends View {
     // 狭い（右パネル）ときは 名前 / 状態 の 2 段にする
     const narrow = this.width < 560;
     const meta = (narrow
-      ? h_flex().gap(12).text_size(11.5).child(git).child(agent).child(prEl)
-      : h_flex().flex_none().gap(12).text_size(11.5).child(git.w(90)).child(div().w(110).child(agent)).child(prEl.w(80)))
+      ? h_flex().gap(12).text_size(11.5).child(gitEl).child(agent).child(prEl)
+      : h_flex().flex_none().gap(12).text_size(11.5).child(gitEl.w(90)).child(div().w(110).child(agent)).child(prEl.w(80)))
       .when(removable, (el) => el.child(rm));
     return h_flex().id(`co-${c.path}`).px(10).py(5).gap(8).items_start().rounded(6)
       .when(Boolean(target), (el) => el.cursor_pointer().hover((st) => st.bg(t.hover)).on_click(() => run("pane.focus", { pane: target.pane })))
