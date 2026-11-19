@@ -14,6 +14,13 @@ let
     rev = "e8018e1e753aabe621fc4fd095a7b9bf821446c1";
     hash = "sha256-/fOz/DNHRqjFb8UIueY3y7jjOE+opZHSg9s+RVZ9k5g=";
   };
+  # コミュニティの Herdr レイアウト (MIT)。scripts/install.sh と同じものを置く
+  herdrGlass = pkgs.fetchFromGitHub {
+    owner = "noah4520";
+    repo = "herdr-glass";
+    rev = "bbea46299dd02d1ab3a07b3a154ad5153ebb06b4";
+    hash = "sha256-58x8sPfocOaM0uB71TXbyEHLXClMlC0RqY4sHax9aVI=";
+  };
 in
 {
   home.file = link "home" [ ".zshrc" ".vimrc" ]
@@ -47,5 +54,18 @@ in
       -e 's|if (now >= at\.until \&\& at\.until > 0) { delete this\.grads\[k\];|if (now >= at.until + 150 \&\& at.until > 0) { delete this.grads[k];|' "$dest/main.js"
     # 仕事を終えたインターンも同じ（お辞儀の間は transition が無く、歩き出すフレームで付けても効かない）
     [ "$(grep -c 'at.drawn = true' "$dest/main.js")" = 3 ] || echo "warning: moe-office の main.js が変わったため、帰るときのワープの修正を当てられませんでした" >&2
+  '';
+  # Herdr Glass も実ファイルでコピーする（Appearance がレイアウトに書き込み、背景画像も symlink 越しだと読めない）
+  home.activation.herdrGlass = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    h="${config.xdg.configHome}/herdr-app"
+    run mkdir -p "$h/layouts" "$h/themes" "$h/mods"
+    for m in ${herdrGlass}/mods/herdr-glass-*; do
+      run rm -rf "$h/mods/$(basename "$m")"
+      run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "$m" "$h/mods/"
+    done
+    run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/themes/herdr-glass.json "$h/themes/"
+    run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/layouts/herdr-glass.svg "$h/layouts/"
+    # レイアウトは Appearance の選択を保存しているので、無いときだけ置く
+    [ -e "$h/layouts/herdr-glass.json" ] || run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/layouts/herdr-glass.json "$h/layouts/"
   '';
 }
