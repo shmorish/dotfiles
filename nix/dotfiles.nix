@@ -21,6 +21,26 @@ let
     rev = "bbea46299dd02d1ab3a07b3a154ad5153ebb06b4";
     hash = "sha256-58x8sPfocOaM0uB71TXbyEHLXClMlC0RqY4sHax9aVI=";
   };
+  # Obsidian の community プラグイン。作者のリリースにあるビルド済みファイルをバージョン固定で取ってくる。
+  # 有効にするものは obsidian/community-plugins.json に id を足す
+  vault = "${config.home.homeDirectory}/Documents/Obsidian Vault";
+  obsidianPlugin = id: repo: version: hashes: pkgs.linkFarm id (lib.mapAttrsToList (f: hash: {
+    name = f;
+    path = pkgs.fetchurl { url = "https://github.com/${repo}/releases/download/${version}/${f}"; inherit hash; };
+  }) hashes);
+  obsidianPlugins = [
+    (obsidianPlugin "obsidian-auto-link-title" "zolrath/obsidian-auto-link-title" "1.5.5" {
+      "main.js" = "sha256-6ydJi/0F3Fw4R90HL1Ve1MAq7OJEUQQsLtsl/JYfOL4=";
+      "manifest.json" = "sha256-IZFsjI+hmW04/HnmBkth9BxrNNXU6t2vNvGEMrP0mhE=";
+      "styles.css" = "sha256-BA2Zx4es+Q26Q3TCG2dBfd5DrMWe1KubzuUQv7xFCLI=";
+    })
+    # コアプラグインの Templates と、そのテンプレートフォルダ (obsidian/templates.json) を使う
+    (obsidianPlugin "auto-template-trigger" "numeroflip/obsidian-auto-template-trigger" "1.3.2" {
+      "main.js" = "sha256-bTcDUYUi1mXbrZ6UMY6mzaxFPx5PATvKKEHNMSZyDAM=";
+      "manifest.json" = "sha256-cNzhwIDR5PaYJ+2jU6gTm/io24rUADz1xRnrowi8g9M=";
+      "styles.css" = "sha256-jPCrfFCfYOu4jETjXcR3balcCoLsyAx86yeu/u0Y84I=";
+    })
+  ];
 in
 {
   home.file = link "home" [ ".zshrc" ".vimrc" ]
@@ -30,7 +50,13 @@ in
     # (HM の programs.obsidian は store への読み取り専用リンクになり、変更が黙って捨てられる)。
     # workspace.json などの開いているタブや表示状態は管理しない
     // lib.mapAttrs' (n: v: lib.nameValuePair "Documents/Obsidian Vault/.obsidian/${n}" v)
-      (link "obsidian" [ "app.json" "appearance.json" "core-plugins.json" "hotkeys.json" ]);
+      (link "obsidian" [ "app.json" "appearance.json" "core-plugins.json" "hotkeys.json" "community-plugins.json" "templates.json" ]);
+  # プラグイン本体は実ファイルでコピーする（store への symlink だと Obsidian の更新で書き込めない）。
+  # フォルダごと消さないので、プラグインが自分で書く data.json（設定）は残る
+  home.activation.obsidianPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] (lib.concatMapStrings (p: ''
+    run mkdir -p "${vault}/.obsidian/plugins/${p.name}"
+    run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${p}/* "${vault}/.obsidian/plugins/${p.name}/"
+  '') obsidianPlugins);
   xdg.configFile = link "config" ([
     # ディレクトリごと
     "zsh" "bat" "nvim" "alacritty"
