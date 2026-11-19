@@ -8,5 +8,9 @@
   "font_ligatures": false,
   "minimum_contrast": 1,
   "appearance": "dark",
-  "option_as_alt": "auto"
+  "option_as_alt": "auto",
+  "theme": {
+    "light": "paper",
+    "dark": "rose-pine"
+  }
 }
