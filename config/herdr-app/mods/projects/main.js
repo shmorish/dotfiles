@@ -363,6 +363,11 @@ export default class Spaces extends View {
           .child(div().id(`project-fold-${p}`).flex_none().on_click((_e, cx) => { cx.stop_propagation(); fold(cx); })
             .child(svg(`mods/workspace-chrome/chevron-${folded ? "right" : "down"}.svg`).size(11)))
           .child(div().flex_1().truncate().child(lead?.w.named ? lead.w.name : base(path)))
+          // 案件の space がまだ無ければ、案件フォルダで統括役の Claude を立てる（/herdr-lead を使う前提）
+          .when(!lead, (el) => el.child(div().id(`project-lead-${p}`).flex_none().px(5).rounded(4).font_normal().text_size(11).text_color(t.dim)
+            .hover((st) => st.bg(t.raised).text_color(t.foreground))
+            .on_click((_e, cx) => { cx.stop_propagation(); run("space.new", { folder: path, name: base(path), argv: ["claude"] }); })
+            .child("+ 統括")))
           .child(div().flex_none().text_color(tone(t, s)).child(mark(s)));
         return [head, ...(folded ? [] : rest.map((r) => div().pl(14).child(one(r))))];
       });

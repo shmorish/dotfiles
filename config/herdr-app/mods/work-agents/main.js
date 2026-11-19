@@ -3,7 +3,7 @@
 
 import { View, div, image, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
-import { agents, terminals, panes, focused, spaces, run, theme, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
+import { agents, terminals, panes, focused, spaces, run, theme, exec, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -85,6 +85,8 @@ export default class Agents extends View {
     this.pendingPins = JSON.parse(localStorage.getItem("pins") ?? "[]");
     if (!this.pendingPins.length) localStorage.removeItem("pins");
     this.migratingPins = new Set();
+    // done になってまだ見ていないエージェント（未読マーク）
+    try { this.unread = new Set(JSON.parse(localStorage.getItem("unread") ?? "[]")); } catch { this.unread = new Set(); }
     cx.timer.every(30000, (cx) => cx.notify());
   }
 
@@ -103,6 +105,34 @@ export default class Agents extends View {
     const listed = new Set(list.map((a) => a.address));
     for (const [k, c] of Object.entries(this.changed)) if (!listed.has(k) && now - c.at > 30 * 86400000) delete this.changed[k];
     localStorage.setItem("changed", JSON.stringify(this.changed));
+  }
+
+  // 状態が done / blocked に変わったら: 見ていない done は未読にし、Herdr が裏にいれば macOS の通知を出す。
+  // 最初の 1 回は今の状態を覚えるだけ（起動直後に全員分の通知が出ないように）。
+  watch(all, names) {
+    const cur = focused();
+    const seen = new Set([cur?.agent, cur?.terminal].filter(Boolean));
+    const before = this.raw;
+    this.raw = {};
+    const size = this.unread.size;
+    for (const k of all) {
+      if (k.state !== "live" || !k.status) continue;
+      const s = k.status === "error" ? "blocked" : k.status;
+      this.raw[k.address] = s;
+      if (!before || before[k.address] === s) continue;
+      if (s === "done" && !seen.has(k.address)) this.unread.add(k.address);
+      if (s === "working") this.unread.delete(k.address);
+      if ((s === "done" || s === "blocked") && !window()?.active) this.alert(names.get(k.address) || k.name || k.program?.name || k.address, s);
+    }
+    for (const a of seen) this.unread.delete(a);
+    for (const a of this.unread) if (!(a in this.raw)) this.unread.delete(a);
+    if (this.unread.size !== size) localStorage.setItem("unread", JSON.stringify([...this.unread]));
+  }
+
+  // 引数で渡すので、名前に " などが入っても AppleScript として解釈されない
+  alert(name, s) {
+    const title = s === "blocked" ? "Claude が入力待ち" : "Claude が完了";
+    exec("osascript", ["-e", "on run argv", "-e", "display notification (item 2 of argv) with title (item 1 of argv)", "-e", "end run", title, name]).catch(() => {});
   }
 
   // Keep offline pins until their terminal returns, and keep each pending until
@@ -208,6 +238,7 @@ export default class Agents extends View {
         .when(l === "└" || l === "├", el => el.border_b(1.5).rounded_bl(6))))
       .when(Boolean(pic), el => el.child(div().mr(8).child(pic)))
       .child(div().flex_1().truncate().text_color(on ? t.foreground : t.muted).child(k.name || k.template || k.program?.name || k.address))
+      .when(this.unread.has(k.address), (el) => el.child(div().size(6).mr(6).flex_none().rounded(3).bg(t.blocked)))
       .child(this.status(t, { status: st }, compact));
   }
 
@@ -231,6 +262,7 @@ export default class Agents extends View {
     this.listed = new Map(list.map((a) => [a.address, a.status]));
     this.panes = new Map(list.map((a) => [a.address, a.pane]));
     const all = terminals();
+    this.watch(all, new Map(list.map((a) => [a.address, a.space_name])));
     // 生きている親がいる子は、自分のペインがあっても親の下にだけ出す（サイドバーの space と同じ入れ子）
     const live = new Set(all.filter((k) => k.state === "live").map((k) => k.address));
     list = list.filter((a) => !live.has(all.find((k) => k.address === a.address)?.parent));
@@ -363,6 +395,7 @@ export default class Agents extends View {
           })).child(pic)))
         .child(h_flex().flex_1().min_w(0).gap(5).items_center()
           .child(div().min_w(0).max_w(full && more ? 120 : 200).truncate().text_color(idle ? t.muted : t.foreground).child(name))
+          .when(this.unread.has(a.address), el => el.child(div().size(6).flex_none().rounded(3).bg(t.blocked)))
           .when(full && Boolean(more), el => el.child(div().flex_1().min_w(0).truncate().text_color(t.dim).child(`\u00b7 ${more}`))))
         .when(Boolean(machine), el => el.child(div().text_size(10).text_color(t.dim).child(machine)))
         .when(subs.length > 0, el => el.child(fold(a, subs)))
