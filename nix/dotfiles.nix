@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   # stow の置き換え。store にコピーせずリポジトリ実体へ symlink するので、
   # nvim (lazy-lock.json) などの自己書き込みも動き、編集は即反映 (ファイル追加時だけ `make switch`)。
@@ -7,6 +7,13 @@ let
   });
   # config/herdr-app/<sub>/ にある自作の mod・layout を全部 (git add したものだけ見える)
   herdrApp = sub: map (n: "herdr-app/${sub}/${n}") (builtins.attrNames (builtins.readDir ../config/herdr-app/${sub}));
+  # コミュニティの Herdr mod。LICENSE が無いので repo にはコピーせず、作者の repo をコミット固定で取ってくる
+  moeOffice = pkgs.fetchFromGitHub {
+    owner = "kamikuo";
+    repo = "herdr-moe-office";
+    rev = "e8018e1e753aabe621fc4fd095a7b9bf821446c1";
+    hash = "sha256-/fOz/DNHRqjFb8UIueY3y7jjOE+opZHSg9s+RVZ9k5g=";
+  };
 in
 {
   home.file = link "home" [ ".zshrc" ".vimrc" ]
@@ -22,4 +29,10 @@ in
   ] ++ herdrApp "mods" ++ herdrApp "layouts"
     # 自作・取り込んだテーマ（.json だけ。ライセンス表記は repo にだけ置く）
     ++ builtins.filter (lib.hasSuffix ".json") (herdrApp "themes"));
+  # Herdr は symlink 越しの画像を読まないので、moe-office は実ファイルとしてコピーする
+  home.activation.herdrMoeOffice = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    dest="${config.xdg.configHome}/herdr-app/mods/moe-office"
+    run rm -rf "$dest"
+    run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "${moeOffice}/mods/moe-office" "$dest"
+  '';
 }
