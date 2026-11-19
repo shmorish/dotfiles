@@ -138,6 +138,18 @@ export default class Board extends View {
     });
   }
 
+  // worktree を消し、マージ済みのブランチも消す。未コミットの変更があれば git が断るのでそのまま残る。
+  remove(r, c, cx) {
+    this.arming = null;
+    cx.spawn(async (cx) => {
+      const res = await git(r.path, ["worktree", "remove", c.path]);
+      if (res.code !== 0) this.prNote = `削除できません: ${(res.stderr || res.stdout).trim().split("\n")[0]}`;
+      else if (c.branch) await git(r.path, ["branch", "-D", c.branch]);
+      cx.notify();
+      this.refresh(cx);
+    });
+  }
+
   row(r, c, t, ps) {
     const here = ps.filter((p) => p.terminal && p.cwd && (p.cwd === c.path || p.cwd.startsWith(`${c.path}/`)));
     const agents = here.filter((p) => p.status);
@@ -157,12 +169,21 @@ export default class Board extends View {
         .on_click((_e, cx) => { cx.stop_propagation(); run("space.new", { folder: c.path, argv: ["claude"] }); })
         .child("+ Claude");
     const prEl = div().flex_none().text_color(prColor ?? t.dim).child(pr ? `#${pr.number} ${pr.state.toLowerCase()}` : "");
+    // PR がマージ済みで、そこで何も動いていない worktree だけ消せる。1 回目で確認表示、2 回目で実行
+    const removable = !c.main && !target && pr?.state === "MERGED";
+    const armed = this.arming === c.path;
+    const rm = div().id(`rm-${c.path}`).flex_none().px(6).rounded(4).text_size(11.5).cursor_pointer()
+      .text_color(armed ? t.ansi1 : t.dim).when(armed, (el) => el.bg(t.raised))
+      .hover((st) => st.bg(t.raised).text_color(t.ansi1))
+      .on_click((_e, cx) => { cx.stop_propagation(); armed ? this.remove(r, c, cx) : (this.arming = c.path, cx.notify()); })
+      .child(armed ? "本当に削除" : "削除");
     const name = div().flex_1().min_w(0).truncate().text_color(t.foreground).child(label);
     // 狭い（右パネル）ときは 名前 / 状態 の 2 段にする
     const narrow = this.width < 560;
-    const meta = narrow
+    const meta = (narrow
       ? h_flex().gap(12).text_size(11.5).child(git).child(agent).child(prEl)
-      : h_flex().flex_none().gap(12).text_size(11.5).child(git.w(90)).child(div().w(110).child(agent)).child(prEl.w(80));
+      : h_flex().flex_none().gap(12).text_size(11.5).child(git.w(90)).child(div().w(110).child(agent)).child(prEl.w(80)))
+      .when(removable, (el) => el.child(rm));
     return h_flex().id(`co-${c.path}`).px(10).py(5).gap(8).items_start().rounded(6)
       .when(Boolean(target), (el) => el.cursor_pointer().hover((st) => st.bg(t.hover)).on_click(() => run("pane.focus", { pane: target.pane })))
       .child(div().w(14).flex_none().text_color(t.dim).child(c.main ? "" : "└"))
