@@ -25,7 +25,12 @@ in
 {
   home.file = link "home" [ ".zshrc" ".vimrc" ]
     # 自作の Claude Code skill。グローバル gitignore が .claude/ を無視するので repo 側はドットなし
-    // lib.mapAttrs' (n: v: lib.nameValuePair ".claude/${n}" v) (link "claude" [ "skills/herdr-lead" "statusline.sh" ]);
+    // lib.mapAttrs' (n: v: lib.nameValuePair ".claude/${n}" v) (link "claude" [ "skills/herdr-lead" "statusline.sh" ])
+    # Obsidian の Vault 設定。Obsidian は symlink 越しに書くので、画面で変えた設定もそのまま repo に入る
+    # (HM の programs.obsidian は store への読み取り専用リンクになり、変更が黙って捨てられる)。
+    # workspace.json などの開いているタブや表示状態は管理しない
+    // lib.mapAttrs' (n: v: lib.nameValuePair "Documents/Obsidian Vault/.obsidian/${n}" v)
+      (link "obsidian" [ "app.json" "appearance.json" "core-plugins.json" "hotkeys.json" ]);
   xdg.configFile = link "config" ([
     # ディレクトリごと
     "zsh" "bat" "nvim" "alacritty"
