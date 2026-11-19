@@ -26,6 +26,6 @@ in
     # mobile / JVM
     ktlint ktfmt swiftformat scrcpy android-tools tuist
     # GUI / font。.app は ~/Applications/Home Manager Apps、font は ~/Library/Fonts/HomeManager に HM が配置
-    alacritty bruno vscode herdr-desktop claude-code github-copilot-cli nerd-fonts.hack
+    alacritty bruno vscode herdr-desktop obsidian claude-code github-copilot-cli nerd-fonts.hack
   ];
 }
