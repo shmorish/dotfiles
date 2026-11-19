@@ -77,6 +77,7 @@ export default class Tabs extends View {
       ? Math.max(10, (root.traffic_lights[0] + 64) / settings().zoom - (sidebar?.hidden ? 0 : sidebar?.size?.px ?? 0))
       : 10;
     const panel = find(root, "panel"), body = find(root, "panel-body");
+    const office = find(root, "office");
     const enabled = [...(shared("workspace.panels") ?? ["files", "changes"]), "board"];
     this.syncPanel(space, panel, body, enabled);
     const panelButton = (id, label, icon) => {
@@ -97,6 +98,12 @@ export default class Tabs extends View {
       .when(enabled.includes("files"), el => el.child(panelButton("files", "Files", "mods/files/file.svg")))
       .when(enabled.includes("changes"), el => el.child(panelButton("changes", "Changes", "mods/changes/changes.svg")))
       .child(panelButton("board", "Board", "mods/workspace-chrome/layers.svg"))
+      // 上のオフィス（moe-office）の出し入れ
+      .when(Boolean(office), el => el.child(h_flex().id("office-toggle").h(26).px(8).gap(5).flex_none().items_center().rounded(6)
+        .text_size(12).bg(office.hidden ? t.chrome : t.selected).text_color(office.hidden ? t.muted : t.foreground)
+        .hover(s => s.bg(t.hover)).on_mouse_down("left", stop)
+        .on_click(() => run("layout.toggle", { id: "office" }))
+        .child("Office")))
       .when(w?.buttons, el => el.child(button("minimize", w.platform === "windows" ? svg("mods/work-tabs/win-min.svg").size(16) : "−", () => run("window.minimize")))
         .child(button("maximize", w.platform === "windows" ? svg(`mods/work-tabs/${w.maximized ? "win-restore" : "win-max"}.svg`).size(16) : "□", () => run("window.maximize")))
         .child(button("close-window", w.platform === "windows" ? svg("mods/work-tabs/win-close.svg").size(16) : svg("mods/pane/close.svg").size(13), () => run("window.close"))));

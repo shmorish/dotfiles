@@ -87,6 +87,21 @@
           "window_drag": true
         },
         {
+          "id": "office",
+          "type": "block",
+          "content": {
+            "mod": "moe-office",
+            "props": {
+              "lang": "ja"
+            }
+          },
+          "size": {
+            "px": 220
+          },
+          "min": 170,
+          "max": 520
+        },
+        {
           "id": "work-body",
           "type": "row",
           "children": [
