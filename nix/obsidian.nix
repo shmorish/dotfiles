@@ -20,6 +20,16 @@ let
     "manifest.json" = "sha256-LvyI356XMkc2DUhrQgeRwmbIgkUWkZMDuUjQGS4VkSc=";
     "styles.css" = "sha256-1w2OvUH8I7/V1Zhzsak+2VVLFUVGo+Y3vU4ELmLRzyM=";
   });
+  # community プラグインの Templater。Tasks と同じくリリースのビルド済みファイルをバージョン固定で取ってくる。
+  # テンプレートの <% tp.* %> を展開するのに使う。有効にするため obsidian/community-plugins.json にも id を書いている
+  templater = pkgs.linkFarm "templater-obsidian" (lib.mapAttrsToList (name: hash: {
+    inherit name;
+    path = pkgs.fetchurl { url = "https://github.com/SilentVoid13/Templater/releases/download/2.26.0/${name}"; inherit hash; };
+  }) {
+    "main.js" = "sha256-Cs1Fz9s6czfivvURaZvB+BncZGRa00gN8zV51C0ty6o=";
+    "manifest.json" = "sha256-kcn6hRAIL/+gs9AiqsSYbjs5IpWxEm6Efq1+1yiRabg=";
+    "styles.css" = "sha256-Z6bdLR1t7coSh8M0yohOxBlkM/ccpHOIoL0+rBTPi18=";
+  });
 in
 {
   # Vault の設定は repo 実体へ symlink。Obsidian は symlink 越しに書くので、画面で変えた設定はそのまま repo に入る
@@ -39,5 +49,7 @@ in
     run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode ${toolkit}/themes/Mono "${vault}/themes/"
     run mkdir -p "${vault}/plugins/obsidian-tasks-plugin"
     run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${tasks}/* "${vault}/plugins/obsidian-tasks-plugin/"
+    run mkdir -p "${vault}/plugins/templater-obsidian"
+    run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${templater}/* "${vault}/plugins/templater-obsidian/"
   '';
 }
