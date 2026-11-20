@@ -5,8 +5,8 @@ let
   # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
   # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
   toolkit = pkgs.fetchzip {
-    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.5.0/obsidian-toolkit.tar.gz";
-    hash = "sha256-9etXfkr7cfiQ0dO2PEIargNCmdi8os7mUrgS+EC81HY=";
+    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.6.0/obsidian-toolkit.tar.gz";
+    hash = "sha256-8QTDico5dhSU/MY/dw7EhOxf3HhL6rRl3fgKuTn4UDM=";
     stripRoot = false;
   };
   # community プラグインの Tasks。自作するには重いので、リリースにあるビルド済みファイルをバージョン固定で取ってくる。
@@ -19,16 +19,6 @@ let
     "main.js" = "sha256-IbOdoSQkEhm1ivbTbDyJCcUkVqGsKdk1EDhi1XvWBNk=";
     "manifest.json" = "sha256-LvyI356XMkc2DUhrQgeRwmbIgkUWkZMDuUjQGS4VkSc=";
     "styles.css" = "sha256-1w2OvUH8I7/V1Zhzsak+2VVLFUVGo+Y3vU4ELmLRzyM=";
-  });
-  # community プラグインの Templater。Tasks と同じくリリースのビルド済みファイルをバージョン固定で取ってくる。
-  # テンプレートの <% tp.* %> を展開するのに使う。有効にするため obsidian/community-plugins.json にも id を書いている
-  templater = pkgs.linkFarm "templater-obsidian" (lib.mapAttrsToList (name: hash: {
-    inherit name;
-    path = pkgs.fetchurl { url = "https://github.com/SilentVoid13/Templater/releases/download/2.26.0/${name}"; inherit hash; };
-  }) {
-    "main.js" = "sha256-Cs1Fz9s6czfivvURaZvB+BncZGRa00gN8zV51C0ty6o=";
-    "manifest.json" = "sha256-kcn6hRAIL/+gs9AiqsSYbjs5IpWxEm6Efq1+1yiRabg=";
-    "styles.css" = "sha256-Z6bdLR1t7coSh8M0yohOxBlkM/ccpHOIoL0+rBTPi18=";
   });
 in
 {
@@ -49,7 +39,5 @@ in
     run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode ${toolkit}/themes/Mono "${vault}/themes/"
     run mkdir -p "${vault}/plugins/obsidian-tasks-plugin"
     run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${tasks}/* "${vault}/plugins/obsidian-tasks-plugin/"
-    run mkdir -p "${vault}/plugins/templater-obsidian"
-    run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${templater}/* "${vault}/plugins/templater-obsidian/"
   '';
 }
