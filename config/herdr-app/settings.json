@@ -1,16 +1,8 @@
 {
-  "zoom": 1,
+  "zoom": 1.0,
   "sounds": {
     "enabled": true
   },
-  "font": "Hack Nerd Font",
-  "font_size": 12,
   "font_ligatures": false,
-  "minimum_contrast": 1,
-  "appearance": "dark",
-  "option_as_alt": "auto",
-  "theme": {
-    "light": "paper",
-    "dark": "rose-pine"
-  }
+  "minimum_contrast": 1.0
 }

@@ -5,8 +5,13 @@ let
   link = prefix: names: lib.genAttrs names (n: {
     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/${prefix}/${n}";
   });
-  # config/herdr-app/<sub>/ にある自作の mod・layout を全部 (git add したものだけ見える)
-  herdrApp = sub: map (n: "herdr-app/${sub}/${n}") (builtins.attrNames (builtins.readDir ../config/herdr-app/${sub}));
+  # Herdr.app の自作の設定・mod・レイアウトは別 repo。変えたらそちらに push し、ここの rev と hash を上げる
+  herdrConfig = pkgs.fetchFromGitHub {
+    owner = "shmorish";
+    repo = "herdr-config";
+    rev = "afae854948730095779ffdb049712d56c5bfc0f5";
+    hash = "sha256-LodPrzZojAXove11t6uEc96FJeh/yQn/uIzOPZk3m/U=";
+  };
   # コミュニティの Herdr mod。LICENSE が無いので repo にはコピーせず、コミット固定で取ってくる。
   # 自分の fork (kamikuo/herdr-moe-office から)。作業役の二重表示・帰るときのワープ・レイアウトの props が効かない問題の修正と、Ocean の部屋を足してある
   moeOffice = pkgs.fetchFromGitHub {
@@ -87,11 +92,19 @@ in
     "zsh" "bat" "nvim" "alacritty"
     # ファイル単位 (同じディレクトリにアプリ自身が書くファイルがある)
     "starship.toml" "sheldon/plugins.toml" "herdr/config.toml"
-    # Herdr.app: 同梱の layouts/mods/themes は起動時に Herdr が上書きするので、自作分だけ足す
-    "herdr-app/settings.json" "herdr-app/keys.json"
-  ] ++ herdrApp "mods" ++ herdrApp "layouts"
-    # 自作・取り込んだテーマ（.json だけ。ライセンス表記は repo にだけ置く）
-    ++ builtins.filter (lib.hasSuffix ".json") (herdrApp "themes"));
+  ]);
+  # Herdr.app: herdr-config の中身を実ファイルでコピーする（画像は symlink 越しに読めず、Herdr は store に書けない）。
+  # 同梱の layouts/mods/themes は起動時に Herdr が上書きするので、自作分だけ足す。テーマは .json だけ（LICENSE は repo に置く）。
+  # 前の世代の symlink が消えてから置くので linkGeneration の後
+  home.activation.herdrConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    h="${config.xdg.configHome}/herdr-app"
+    run mkdir -p "$h/mods" "$h/layouts" "$h/themes"
+    for p in ${herdrConfig}/mods/* ${herdrConfig}/layouts/* ${herdrConfig}/themes/*.json ${herdrConfig}/settings.json ${herdrConfig}/keys.json; do
+      d="$h/''${p#${herdrConfig}/}"
+      run rm -rf "$d"
+      run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "$p" "$d"
+    done
+  '';
   # Herdr は symlink 越しの画像を読まないので、moe-office は実ファイルとしてコピーする
   home.activation.herdrMoeOffice = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     dest="${config.xdg.configHome}/herdr-app/mods/moe-office"
