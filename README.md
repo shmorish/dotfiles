@@ -23,7 +23,6 @@ make setup
 3. `com.apple.rcd` を無効化 (メディアキーで Music.app が起動しないようにする)
 4. macOS の設定: fn キーを標準に、F3 で選択範囲をクリップボードへスクショ。画面ロックは既定の Ctrl+⌘+Q (アップルメニュー項目は defaults で上書き不可)
 
-
 ## 設定を変更したとき
 
 ```bash
@@ -61,17 +60,21 @@ make nix-uninstall  # Nix 本体を完全に削除する (端末返却時など)
 ## 構成
 
 ```
-flake.nix        # inputs (nixpkgs, home-manager) と homeConfigurations
+flake.nix        # inputs (nixpkgs, home-manager)、homeConfigurations、Node の devShells
 nix/             # Home Manager モジュール
-  default.nix    #   ユーザー情報、週次 GC
+  default.nix    #   ユーザー情報、週次 GC、repo 実体へ symlink する link 関数
   packages.nix   #   CLI / GUI / font のパッケージ一覧
   java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
-  dotfiles.nix   #   home/ と config/ を ~/ と ~/.config/ へリンク
+  dotfiles.nix   #   home/ と config/ と claude/ を ~/、~/.config/、~/.claude/ へリンク
+  herdr.nix      #   Herdr.app の設定と mod (shmorish/herdr-config、shmorish/herdr-office) を取ってきて配置
+  obsidian.nix   #   Obsidian の Vault 設定 (obsidian/) のリンクと community プラグイン
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
 config/          # ~/.config/ 配下 (zsh, nvim, alacritty, herdr, ...)。git は git.nix で生成
+claude/          # Claude Code の skill と statusline
+obsidian/        # Obsidian の Vault 設定とプラグインの設定
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 
-設定ファイルは Nix store にコピーせず、リポジトリ実体への symlink として配置されます。
+設定ファイルは Nix store にコピーせず、リポジトリ実体への symlink として配置されます (Herdr.app の設定と mod、Obsidian のプラグイン本体は実ファイルでコピー)。
 そのためリポジトリ内のファイルを直接編集すれば即反映されます (新規ファイルの追加時のみ `make switch` が必要)。

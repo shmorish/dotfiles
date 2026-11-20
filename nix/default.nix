@@ -1,6 +1,12 @@
-{ username, ... }:
+{ config, lib, username, ... }:
 {
-  imports = [ ./packages.nix ./dotfiles.nix ./git.nix ./java.nix ];
+  imports = [ ./packages.nix ./dotfiles.nix ./git.nix ./java.nix ./herdr.nix ./obsidian.nix ];
+
+  # stow の置き換え。store にコピーせずリポジトリ実体へ symlink するので、
+  # nvim (lazy-lock.json) などの自己書き込みも動き、編集は即反映 (ファイル追加時だけ `make switch`)。
+  _module.args.link = prefix: names: lib.genAttrs names (n: {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/${prefix}/${n}";
+  });
 
   home.username = username;
   home.homeDirectory = "/Users/${username}";
