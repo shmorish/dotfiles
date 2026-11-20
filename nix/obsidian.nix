@@ -5,10 +5,20 @@ let
   # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
   # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
   toolkit = pkgs.fetchzip {
-    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.3.0/obsidian-toolkit.tar.gz";
-    hash = "sha256-jhPMTRd0rd7YhmJ6suXHY6l0zU9bZfkJGNRGzbGjf2I=";
+    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.4.0/obsidian-toolkit.tar.gz";
+    hash = "sha256-ojVBXpDJ7sdozb0LsaLp0DI0uTiB3kT4PkkV/Apev9k=";
     stripRoot = false;
   };
+  # community プラグインの Tasks。自作するには重いので、作者のリリースにあるビルド済みファイルをバージョン固定で取ってくる。
+  # 有効にするため obsidian/community-plugins.json にも id を書いている
+  tasks = pkgs.linkFarm "obsidian-tasks-plugin" (lib.mapAttrsToList (name: hash: {
+    inherit name;
+    path = pkgs.fetchurl { url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/8.6.0/${name}"; inherit hash; };
+  }) {
+    "main.js" = "sha256-UA+BBtBd20g7v+wTXKx5SAIr9rpzhtGFGyj00IeGbo8=";
+    "manifest.json" = "sha256-LvyI356XMkc2DUhrQgeRwmbIgkUWkZMDuUjQGS4VkSc=";
+    "styles.css" = "sha256-1w2OvUH8I7/V1Zhzsak+2VVLFUVGo+Y3vU4ELmLRzyM=";
+  });
 in
 {
   # Vault の設定は repo 実体へ symlink。Obsidian は symlink 越しに書くので、画面で変えた設定はそのまま repo に入る
@@ -26,5 +36,7 @@ in
     run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${toolkit}/plugin/* "${vault}/plugins/toolkit/"
     run rm -rf "${vault}/themes/Mono"
     run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode ${toolkit}/themes/Mono "${vault}/themes/"
+    run mkdir -p "${vault}/plugins/obsidian-tasks-plugin"
+    run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${tasks}/* "${vault}/plugins/obsidian-tasks-plugin/"
   '';
 }
