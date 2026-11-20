@@ -38,6 +38,59 @@ let
       "manifest.json" = "sha256-LvyI356XMkc2DUhrQgeRwmbIgkUWkZMDuUjQGS4VkSc=";
       "styles.css" = "sha256-1w2OvUH8I7/V1Zhzsak+2VVLFUVGo+Y3vU4ELmLRzyM=";
     })
+    (plugin "obsidian-advanced-uri" "vinzent03/obsidian-advanced-uri" "2.2.1" {
+      "main.js" = "sha256-hVXZpU3g1VNABwR6weWN7nRvOU+eI/5XQMpYV4Ukd/M=";
+      "manifest.json" = "sha256-BVeVeUdzzMlSaIywGyS/nDKczyNzHC/47Jg1Uz4Ms4s=";
+      "styles.css" = "sha256-8wKoLxNavlC8u1ZSPL6Xq0BSkKQ1hYIbjlLfTt5PRBc=";
+    })
+    (plugin "obsidian-book-search-plugin" "anpigon/obsidian-book-search-plugin" "0.7.5" {
+      "main.js" = "sha256-H0wByq1CvMz9IriNjkArBnSPuG2LyNpj3auENwBq53k=";
+      "manifest.json" = "sha256-X63gI+w1iv+3ESVb5ZKkS0QsSCQ0Ew9UHyBA4JdPHDc=";
+      "styles.css" = "sha256-aoYzu0ZVtIwhyjy6RJmFyJSwTL8vWhnEmuBzu229oOU=";
+    })
+    (plugin "callout-manager" "eth-p/obsidian-callout-manager" "1.1.2" {
+      "main.js" = "sha256-PJfroN0Mfni/P6rXAcu8ODR1QmS88HF69kQD/hUrLwQ=";
+      "manifest.json" = "sha256-sOAiQseLOeEmPaiR14nj/KoMH2xIqhwrvkuJLdyMzgo=";
+      "styles.css" = "sha256-hd19ATrWQvz2zJ+9h6ga1wdpJ2xHJXIlYuNYX0QHqlQ=";
+    })
+    (plugin "obsidian-excalidraw-plugin" "zsviczian/obsidian-excalidraw-plugin" "2.29.2" {
+      "main.js" = "sha256-Sd/FZnp3MNvBJM38KkqOiRiBAGNkk6OdZJO/VpalVUE=";
+      "manifest.json" = "sha256-joKCj9kSVhXoo2HQ8VVT5UjKwu56MD5VOHN4pTuSX9k=";
+      "styles.css" = "sha256-bHqZFPgzBdCfmVckiJf/LyXPLC1LRrLZq0Lzx+4dKfA=";
+    })
+    (plugin "journal-review" "kageetai/obsidian-plugin-journal-review" "4.0.0" {
+      "main.js" = "sha256-DrbAzoVTppUjHLxBpfryERtrFr09BLVv6pxIky2udrY=";
+      "manifest.json" = "sha256-ltAmkILAmTfFt77oH8xPdfp9og93KUNGaQLDehPvebU=";
+      "styles.css" = "sha256-0Knr3IzPv2bv/EA+Dn5Pzw9otK7934Y/7sdC1/pyoMQ=";
+    })
+    (plugin "obsidian-kindle-plugin" "hadynz/obsidian-kindle-plugin" "2.3.1" {
+      "main.js" = "sha256-k9OD8dk2AiI6V7pKn3Ztjwz0j6AQmtPE7ZiUeZ5xX2E=";
+      "manifest.json" = "sha256-tj1Cu8qSWN+QYWARzIqI8wD3a/6HUrOJUDD/E8AnHfs=";
+    })
+    (plugin "mermaid-tools" "dartungar/obsidian-mermaid" "1.4.3" {
+      "main.js" = "sha256-Sg1aLB0nlYc2p6VnInJw4tcn4rUvrphb7dEyskHnt1w=";
+      "manifest.json" = "sha256-45LYJwhSGkr/waIh0+OqFv9/bpEWKQZA3QkhOTYIiMk=";
+      "styles.css" = "sha256-XUivyfLM7/1ri6pV/uUab943TjAZWHDqUsXax5OkQkI=";
+    })
+    (plugin "mononote" "czottmann/obsidian-mononote" "1.2.2" {
+      "main.js" = "sha256-JoW8mA8ffwasLsKGIoD2nbA/s2hAufwNRgGAkVQLCCI=";
+      "manifest.json" = "sha256-df8Ant3tCqwcEedXGuU7nHX1o2rzJGeE4tHrdxYKqLc=";
+    })
+    (plugin "darlal-switcher-plus" "darlal/obsidian-switcher-plus" "6.3.0" {
+      "main.js" = "sha256-Z0ba09axMmmLBMKhDqDC9xwDyLWve+x1PKdjGccuPyM=";
+      "manifest.json" = "sha256-H1qyAXUuwKavY1P24E1qV8vZhRx+qeOl1Kt/UuCFjtY=";
+      "styles.css" = "sha256-T4XeOpAreMZJEPycvAfRvEV7tdrbUds1S0BfIdxnvDY=";
+    })
+    (plugin "recent-files-obsidian" "tgrosinger/recent-files-obsidian" "1.7.10" {
+      "main.js" = "sha256-moXSKjQta8jPy/6JqO0Ezf20RMNwoiCwCORCPx/Tfcg=";
+      "manifest.json" = "sha256-bb+jFKS13z9/goP9Qbxk0Um+88ESjhW1qU3GkLVfsNc=";
+      "styles.css" = "sha256-LuSckqsLuEgiGglib3umdrvoU3LEyAZe53kLCDLLPds=";
+    })
+    (plugin "obsidian-style-settings" "obsidian-community/obsidian-style-settings" "1.0.9" {
+      "main.js" = "sha256-GCirqs2rTFV4twWmJcWFswUS+O+tTHz8WhjnDMNVdGg=";
+      "manifest.json" = "sha256-nP/cIM8qoTVIIOAFC2lLD5tXZEbj1dRKNq6LAYflv7g=";
+      "styles.css" = "sha256-7nk30r5QZTqJzLMK5fBXKyNQfVt/EyjQBScaNjB1v9g=";
+    })
   ];
 in
 {
