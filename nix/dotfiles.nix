@@ -9,8 +9,8 @@ let
   herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "7fc6d7970668158123d63864bc8a7d0945713fe6";
-    hash = "sha256-kbhAM7WOiX2nS2gDtQrygeuh6z3sCjcDzcREKKfnIRU=";
+    rev = "bd23a9d3f753ccfe2318190fdd62c3428cbc7991";
+    hash = "sha256-aMD/ZDTdLQtBYRCncYnpzFKjBdTJNntIrcyFejPeGgk=";
   };
   # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
   herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
@@ -23,8 +23,8 @@ let
   herdrOfficeSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-office";
-    rev = "8f7c858caafbafee8e4ec1f2c65357ff4c2a393f";
-    hash = "sha256-8p07TGr81hivYPfkBU23sPSw81sMTPgHbR0sAtJOvT8=";
+    rev = "a3e9fd81a2ded8b0fc49d9d9d5fa8b64408cc3ba";
+    hash = "sha256-G47ddGhoeTxE2Nkh4zJJFz9Jt1sXlkgzCaKfvHZmCh4=";
   };
   # TypeScript で書いてあるので、Herdr が読む .js に変換したものを使う
   herdrOffice = pkgs.runCommand "herdr-office" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
