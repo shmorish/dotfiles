@@ -9,8 +9,8 @@ let
   herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "32ca28489e981eba0ff13cc5a35e103537714b78";
-    hash = "sha256-/0CzPqAJ192kohk5PZfaIoV6RkunlJhV4ycGw5xR8lc=";
+    rev = "6dbd0a041765c0b8c1788985889b0e4c4e4e8d6e";
+    hash = "sha256-oJDRqHMim2ibSc9p9ay0KtHZKiJRxzCHk1yt+FsJJqY=";
   };
   # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
   herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
@@ -20,11 +20,11 @@ let
   '';
   # コミュニティの Herdr mod。LICENSE が無いので repo にはコピーせず、コミット固定で取ってくる。
   # 自分の fork shmorish/herdr-office (kamikuo/herdr-moe-office から)。作業役の二重表示・帰るときのワープ・レイアウトの props が効かない問題を直し、日本語とナチュラルな部屋だけにしてある
-  moeOffice = pkgs.fetchFromGitHub {
+  herdrOffice = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-office";
-    rev = "81a99b545668432583802ff1f8f7a44268f7584d";
-    hash = "sha256-Ue8KFpSVsF4anpU2tg6WT6wDdEU/6m3ppo2uwJPY+cY=";
+    rev = "48efa813f2beec2f10fc808658874e92ff3e9650";
+    hash = "sha256-xHr/8ihUKf7o7QBkqEnn+qsOylhc2hikwizc2fmDdGA=";
   };
   # コミュニティの Herdr レイアウト (MIT)。scripts/install.sh と同じものを置く
   herdrGlass = pkgs.fetchFromGitHub {
@@ -111,11 +111,11 @@ in
       run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "$p" "$d"
     done
   '';
-  # Herdr は symlink 越しの画像を読まないので、moe-office は実ファイルとしてコピーする
-  home.activation.herdrMoeOffice = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    dest="${config.xdg.configHome}/herdr-app/mods/moe-office"
-    run rm -rf "$dest"
-    run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "${moeOffice}/mods/moe-office" "$dest"
+  # Herdr は symlink 越しの画像を読まないので、office は実ファイルとしてコピーする（moe-office は改名前の名前）
+  home.activation.herdrOffice = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    dest="${config.xdg.configHome}/herdr-app/mods/office"
+    run rm -rf "$dest" "${config.xdg.configHome}/herdr-app/mods/moe-office"
+    run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "${herdrOffice}/mods/office" "$dest"
   '';
   # Herdr Glass も実ファイルでコピーする（Appearance がレイアウトに書き込み、背景画像も symlink 越しだと読めない）
   home.activation.herdrGlass = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
