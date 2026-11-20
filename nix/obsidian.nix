@@ -5,17 +5,18 @@ let
   # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
   # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
   toolkit = pkgs.fetchzip {
-    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.4.0/obsidian-toolkit.tar.gz";
-    hash = "sha256-ojVBXpDJ7sdozb0LsaLp0DI0uTiB3kT4PkkV/Apev9k=";
+    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.5.0/obsidian-toolkit.tar.gz";
+    hash = "sha256-9etXfkr7cfiQ0dO2PEIargNCmdi8os7mUrgS+EC81HY=";
     stripRoot = false;
   };
-  # community プラグインの Tasks。自作するには重いので、作者のリリースにあるビルド済みファイルをバージョン固定で取ってくる。
-  # 有効にするため obsidian/community-plugins.json にも id を書いている
+  # community プラグインの Tasks。自作するには重いので、リリースにあるビルド済みファイルをバージョン固定で取ってくる。
+  # 有効にするため obsidian/community-plugins.json にも id を書いている。
+  # 今は日本語訳を足した fork（8.6.0 + 日本語訳）を使っている。本家に日本語訳が入った版が出たら、本家の repo とその版に戻す
   tasks = pkgs.linkFarm "obsidian-tasks-plugin" (lib.mapAttrsToList (name: hash: {
     inherit name;
-    path = pkgs.fetchurl { url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/8.6.0/${name}"; inherit hash; };
+    path = pkgs.fetchurl { url = "https://github.com/shmorish/obsidian-tasks/releases/download/8.6.0-ja.1/${name}"; inherit hash; };
   }) {
-    "main.js" = "sha256-UA+BBtBd20g7v+wTXKx5SAIr9rpzhtGFGyj00IeGbo8=";
+    "main.js" = "sha256-IbOdoSQkEhm1ivbTbDyJCcUkVqGsKdk1EDhi1XvWBNk=";
     "manifest.json" = "sha256-LvyI356XMkc2DUhrQgeRwmbIgkUWkZMDuUjQGS4VkSc=";
     "styles.css" = "sha256-1w2OvUH8I7/V1Zhzsak+2VVLFUVGo+Y3vU4ELmLRzyM=";
   });
