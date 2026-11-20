@@ -1,0 +1,64 @@
+/* Mono: 色を使わないミニマルテーマ。基本は変数で決め、足りないところだけセレクタで直す */
+
+body {
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+  --font-text-theme: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+  --font-monospace-theme: "SF Mono", Menlo, monospace;
+  --file-line-width: 42rem;
+  --line-height-normal: 1.7;
+  --h1-size: 1.6em;
+  --h2-size: 1.35em;
+  --h3-size: 1.15em;
+  --h4-size: 1em;
+  --h5-size: 1em;
+  --h6-size: 1em;
+  --link-decoration: none;
+  --link-external-decoration: none;
+}
+
+.theme-light {
+  --background-primary: #ffffff;
+  --background-primary-alt: #fafafa;
+  --background-secondary: #f7f7f7;
+  --background-secondary-alt: #f0f0f0;
+  --background-modifier-border: #ebebeb;
+  --background-modifier-hover: rgba(0, 0, 0, 0.04);
+  --divider-color: #ebebeb;
+  --text-normal: #222222;
+  --text-muted: #6b6b6b;
+  --text-faint: #a8a8a8;
+  --text-accent: #222222;
+  --text-accent-hover: #000000;
+  --interactive-accent: #222222;
+  --interactive-accent-hover: #000000;
+  --text-on-accent: #ffffff;
+  --text-selection: rgba(0, 0, 0, 0.1);
+}
+
+.theme-dark {
+  --background-primary: #161616;
+  --background-primary-alt: #1b1b1b;
+  --background-secondary: #1b1b1b;
+  --background-secondary-alt: #202020;
+  --background-modifier-border: #2a2a2a;
+  --background-modifier-hover: rgba(255, 255, 255, 0.05);
+  --divider-color: #2a2a2a;
+  --text-normal: #dddddd;
+  --text-muted: #8c8c8c;
+  --text-faint: #5c5c5c;
+  --text-accent: #dddddd;
+  --text-accent-hover: #ffffff;
+  --interactive-accent: #dddddd;
+  --interactive-accent-hover: #ffffff;
+  --text-on-accent: #161616;
+  --text-selection: rgba(255, 255, 255, 0.12);
+}
+
+/* リンクは色でなく下線で区別する */
+.markdown-rendered a,
+.cm-s-obsidian .cm-hmd-internal-link,
+.cm-s-obsidian .cm-link {
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  text-underline-offset: 3px;
+}

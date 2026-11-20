@@ -101,6 +101,8 @@ in
     "app.json" "appearance.json" "core-plugins.json" "hotkeys.json" "community-plugins.json"
     "templates.json" "daily-notes.json" "types.json"
     "plugins/calendar/data.json" "plugins/obsidian-git/data.json" "plugins/templater-obsidian/data.json"
+    # 自作テーマ。Obsidian が書き換えないのでディレクトリごと symlink
+    "themes/Mono"
   ]);
 
   # プラグイン本体は実ファイルでコピーする（store への symlink だと Obsidian の更新で書き込めない）。
