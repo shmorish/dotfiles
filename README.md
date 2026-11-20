@@ -68,13 +68,13 @@ nix/             # Home Manager モジュール
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
   dotfiles.nix   #   home/ と config/ と claude/ を ~/、~/.config/、~/.claude/ へリンク
   herdr.nix      #   Herdr.app の設定と mod (shmorish/herdr-config、shmorish/herdr-office) を取ってきて配置
-  obsidian.nix   #   Obsidian の Vault 設定 (obsidian/) のリンク
+  obsidian.nix   #   Obsidian の Vault 設定 (obsidian/) のリンクと自作プラグイン・テーマ (obsidian-toolkit)
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
 config/          # ~/.config/ 配下 (zsh, nvim, alacritty, herdr, ...)。git は git.nix で生成
 claude/          # Claude Code の skill と statusline
-obsidian/        # Obsidian の Vault 設定と自作テーマ
+obsidian/        # Obsidian の Vault 設定
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 
-設定ファイルは Nix store にコピーせず、リポジトリ実体への symlink として配置されます (Herdr.app の設定と mod は実ファイルでコピー)。
+設定ファイルは Nix store にコピーせず、リポジトリ実体への symlink として配置されます (Herdr.app の設定と mod、Obsidian の自作プラグインとテーマは実ファイルでコピー)。
 そのためリポジトリ内のファイルを直接編集すれば即反映されます (新規ファイルの追加時のみ `make switch` が必要)。
