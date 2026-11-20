@@ -68,8 +68,14 @@
       },
       "min": 44,
       "max": 480,
-      "background": "chrome",
-      "resizable": false
+      "background": "#19172466",
+      "resizable": false,
+      "border": {
+        "width": 1,
+        "color": "#e0def41f"
+      },
+      "radius": 16,
+      "shadow": "lg"
     },
     {
       "id": "work",
@@ -84,7 +90,13 @@
           "size": {
             "px": 42
           },
-          "window_drag": true
+          "window_drag": true,
+          "background": "#19172466",
+          "border": {
+            "width": 1,
+            "color": "#e0def41f"
+          },
+          "radius": 16
         },
         {
           "id": "office",
@@ -99,7 +111,13 @@
             "px": 220
           },
           "min": 170,
-          "max": 520
+          "max": 520,
+          "background": "#19172466",
+          "border": {
+            "width": 1,
+            "color": "#e0def41f"
+          },
+          "radius": 16
         },
         {
           "id": "work-body",
@@ -119,17 +137,17 @@
                     "height": 30,
                     "position": "top"
                   },
-                  "background": "background",
+                  "background": "#191724d9",
                   "border": {
                     "width": 1,
-                    "color": "border"
+                    "color": "#e0def414"
                   },
                   "focus": {
                     "width": 1,
                     "color": "accent"
                   },
-                  "radius": 10,
-                  "gap": 8,
+                  "radius": 16,
+                  "gap": 10,
                   "lone": true
                 }
               }
@@ -172,11 +190,17 @@
               },
               "min": 280,
               "max": 900,
-              "hidden": true
+              "hidden": true,
+              "background": "#19172466",
+              "border": {
+                "width": 1,
+                "color": "#e0def41f"
+              },
+              "radius": 16,
+              "shadow": "lg"
             }
           ],
-          "padding": 8,
-          "gap": 8
+          "gap": 10
         },
         {
           "id": "status-row",
@@ -205,24 +229,44 @@
                 "px": 270
               }
             }
-          ]
+          ],
+          "background": "#19172466",
+          "border": {
+            "width": 1,
+            "color": "#e0def41f"
+          },
+          "radius": 12
         }
       ],
-      "resizable": false
+      "resizable": false,
+      "gap": 10
     }
   ],
-  "background": "canvas",
+  "background": {
+    "image": "mods/herdr-glass-bg/presets/violet.jpg",
+    "fit": "cover"
+  },
   "terminal_padding": [
     14,
     12
   ],
-  "divider": {
-    "width": 1,
-    "color": "border"
-  },
   "titlebar": "none",
   "traffic_lights": [
-    12,
-    16
-  ]
+    24,
+    26
+  ],
+  "colors": {
+    "canvas": "#00000000",
+    "chrome": "#00000000",
+    "background": "#19172400",
+    "surface": "#1f1d2ef7",
+    "raised": "#e0def41c",
+    "hover": "#e0def41a",
+    "selected": "#e0def424",
+    "border": "#e0def426",
+    "popover": "#1f1d2eeb"
+  },
+  "terminal_opacity": 0,
+  "padding": 10,
+  "gap": 10
 }
