@@ -6,19 +6,25 @@ let
     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/${prefix}/${n}";
   });
   # Herdr.app の自作の設定・mod・レイアウトは別 repo。変えたらそちらに push し、ここの rev と hash を上げる
-  herdrConfig = pkgs.fetchFromGitHub {
+  herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "afae854948730095779ffdb049712d56c5bfc0f5";
-    hash = "sha256-LodPrzZojAXove11t6uEc96FJeh/yQn/uIzOPZk3m/U=";
+    rev = "f7c2c1fa14b15931dd49c1a89870def0fb2ac568";
+    hash = "sha256-2cnBJXxBFaeV3hv9oXbtn5AO7zViK7ukJ3wZwEN74Dc=";
   };
+  # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
+  herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
+    cd ${herdrConfigSrc}
+    sh ./build.sh $out/mods
+    cp -R settings.json keys.json layouts themes $out/
+  '';
   # コミュニティの Herdr mod。LICENSE が無いので repo にはコピーせず、コミット固定で取ってくる。
-  # 自分の fork (kamikuo/herdr-moe-office から)。作業役の二重表示・帰るときのワープ・レイアウトの props が効かない問題の修正と、Ocean の部屋を足してある
+  # 自分の fork shmorish/herdr-office (kamikuo/herdr-moe-office から)。作業役の二重表示・帰るときのワープ・レイアウトの props が効かない問題を直し、日本語とナチュラルな部屋だけにしてある
   moeOffice = pkgs.fetchFromGitHub {
     owner = "shmorish";
-    repo = "herdr-moe-office";
-    rev = "77fa9ffdb9e0156d49367ba46862ecaa935b7d67";
-    hash = "sha256-ZcOm1FWrdNW1R66+QWO4xtdlpyvz7LWZYhPsFL9dn50=";
+    repo = "herdr-office";
+    rev = "81a99b545668432583802ff1f8f7a44268f7584d";
+    hash = "sha256-Ue8KFpSVsF4anpU2tg6WT6wDdEU/6m3ppo2uwJPY+cY=";
   };
   # コミュニティの Herdr レイアウト (MIT)。scripts/install.sh と同じものを置く
   herdrGlass = pkgs.fetchFromGitHub {
