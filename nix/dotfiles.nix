@@ -9,8 +9,8 @@ let
   herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "bd23a9d3f753ccfe2318190fdd62c3428cbc7991";
-    hash = "sha256-aMD/ZDTdLQtBYRCncYnpzFKjBdTJNntIrcyFejPeGgk=";
+    rev = "554bcdbde4efd5364b57c959c51e79ff72de0e35";
+    hash = "sha256-HyAeA4GX/qRX4gMFOJINrIDQ/4wsGQhpMT9Y+1NTxmM=";
   };
   # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
   herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
@@ -31,13 +31,6 @@ let
     cd ${herdrOfficeSrc}
     sh ./build.sh $out/mods/office
   '';
-  # コミュニティの Herdr レイアウト (MIT)。scripts/install.sh と同じものを置く
-  herdrGlass = pkgs.fetchFromGitHub {
-    owner = "noah4520";
-    repo = "herdr-glass";
-    rev = "bbea46299dd02d1ab3a07b3a154ad5153ebb06b4";
-    hash = "sha256-58x8sPfocOaM0uB71TXbyEHLXClMlC0RqY4sHax9aVI=";
-  };
   # Obsidian の community プラグイン。作者のリリースにあるビルド済みファイルをバージョン固定で取ってくる。
   # 有効にするものは obsidian/community-plugins.json に id を足す
   # Vault のノートは別の Git repo (shmorish/obsidian) で管理し、その .gitignore で .obsidian/ を外している
@@ -121,18 +114,5 @@ in
     dest="${config.xdg.configHome}/herdr-app/mods/office"
     run rm -rf "$dest" "${config.xdg.configHome}/herdr-app/mods/moe-office"
     run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "${herdrOffice}/mods/office" "$dest"
-  '';
-  # Herdr Glass も実ファイルでコピーする（Appearance がレイアウトに書き込み、背景画像も symlink 越しだと読めない）
-  home.activation.herdrGlass = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    h="${config.xdg.configHome}/herdr-app"
-    run mkdir -p "$h/layouts" "$h/themes" "$h/mods"
-    for m in ${herdrGlass}/mods/herdr-glass-*; do
-      run rm -rf "$h/mods/$(basename "$m")"
-      run ${pkgs.coreutils}/bin/cp -R --no-preserve=mode "$m" "$h/mods/"
-    done
-    run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/themes/herdr-glass.json "$h/themes/"
-    run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/layouts/herdr-glass.svg "$h/layouts/"
-    # レイアウトは Appearance の選択を保存しているので、無いときだけ置く
-    [ -e "$h/layouts/herdr-glass.json" ] || run ${pkgs.coreutils}/bin/cp --no-preserve=mode ${herdrGlass}/layouts/herdr-glass.json "$h/layouts/"
   '';
 }
