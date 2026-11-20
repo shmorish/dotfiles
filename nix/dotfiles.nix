@@ -9,8 +9,8 @@ let
   herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "f7c2c1fa14b15931dd49c1a89870def0fb2ac568";
-    hash = "sha256-2cnBJXxBFaeV3hv9oXbtn5AO7zViK7ukJ3wZwEN74Dc=";
+    rev = "32ca28489e981eba0ff13cc5a35e103537714b78";
+    hash = "sha256-/0CzPqAJ192kohk5PZfaIoV6RkunlJhV4ycGw5xR8lc=";
   };
   # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
   herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
