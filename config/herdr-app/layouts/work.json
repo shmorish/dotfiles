@@ -68,11 +68,11 @@
       },
       "min": 44,
       "max": 480,
-      "background": "#19172466",
+      "background": "#0b162266",
       "resizable": false,
       "border": {
         "width": 1,
-        "color": "#e0def41f"
+        "color": "#dbe7f31f"
       },
       "radius": 16,
       "shadow": "lg"
@@ -91,10 +91,10 @@
             "px": 42
           },
           "window_drag": true,
-          "background": "#19172466",
+          "background": "#0b162266",
           "border": {
             "width": 1,
-            "color": "#e0def41f"
+            "color": "#dbe7f31f"
           },
           "radius": 16
         },
@@ -112,10 +112,10 @@
           },
           "min": 170,
           "max": 520,
-          "background": "#19172466",
+          "background": "#0b162266",
           "border": {
             "width": 1,
-            "color": "#e0def41f"
+            "color": "#dbe7f31f"
           },
           "radius": 16
         },
@@ -137,10 +137,10 @@
                     "height": 30,
                     "position": "top"
                   },
-                  "background": "#191724d9",
+                  "background": "#0b1622d9",
                   "border": {
                     "width": 1,
-                    "color": "#e0def414"
+                    "color": "#dbe7f314"
                   },
                   "focus": {
                     "width": 1,
@@ -191,10 +191,10 @@
               "min": 280,
               "max": 900,
               "hidden": true,
-              "background": "#19172466",
+              "background": "#0b162266",
               "border": {
                 "width": 1,
-                "color": "#e0def41f"
+                "color": "#dbe7f31f"
               },
               "radius": 16,
               "shadow": "lg"
@@ -230,10 +230,10 @@
               }
             }
           ],
-          "background": "#19172466",
+          "background": "#0b162266",
           "border": {
             "width": 1,
-            "color": "#e0def41f"
+            "color": "#dbe7f31f"
           },
           "radius": 12
         }
@@ -243,7 +243,7 @@
     }
   ],
   "background": {
-    "image": "mods/herdr-glass-bg/presets/violet.jpg",
+    "image": "mods/herdr-glass-bg/presets/ocean.jpg",
     "fit": "cover"
   },
   "terminal_padding": [
@@ -258,13 +258,15 @@
   "colors": {
     "canvas": "#00000000",
     "chrome": "#00000000",
-    "background": "#19172400",
-    "surface": "#1f1d2ef7",
-    "raised": "#e0def41c",
-    "hover": "#e0def41a",
-    "selected": "#e0def424",
-    "border": "#e0def426",
-    "popover": "#1f1d2eeb"
+    "background": "#0b162200",
+    "surface": "#0b1622f7",
+    "raised": "#dbe7f31c",
+    "hover": "#dbe7f31a",
+    "selected": "#7dcfff33",
+    "border": "#dbe7f326",
+    "popover": "#0b1622eb",
+    "accent": "#7dcfff",
+    "ring": "#7dcfff"
   },
   "terminal_opacity": 0,
   "padding": 10,
