@@ -9,8 +9,8 @@ let
   herdrConfigSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-config";
-    rev = "6dbd0a041765c0b8c1788985889b0e4c4e4e8d6e";
-    hash = "sha256-oJDRqHMim2ibSc9p9ay0KtHZKiJRxzCHk1yt+FsJJqY=";
+    rev = "7fc6d7970668158123d63864bc8a7d0945713fe6";
+    hash = "sha256-kbhAM7WOiX2nS2gDtQrygeuh6z3sCjcDzcREKKfnIRU=";
   };
   # mod は TypeScript で書いてあるので、Herdr が読む main.js に変換したものを使う
   herdrConfig = pkgs.runCommand "herdr-config" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
@@ -20,12 +20,17 @@ let
   '';
   # コミュニティの Herdr mod。LICENSE が無いので repo にはコピーせず、コミット固定で取ってくる。
   # 自分の fork shmorish/herdr-office (kamikuo/herdr-moe-office から)。作業役の二重表示・帰るときのワープ・レイアウトの props が効かない問題を直し、日本語とナチュラルな部屋だけにしてある
-  herdrOffice = pkgs.fetchFromGitHub {
+  herdrOfficeSrc = pkgs.fetchFromGitHub {
     owner = "shmorish";
     repo = "herdr-office";
-    rev = "48efa813f2beec2f10fc808658874e92ff3e9650";
-    hash = "sha256-xHr/8ihUKf7o7QBkqEnn+qsOylhc2hikwizc2fmDdGA=";
+    rev = "8f7c858caafbafee8e4ec1f2c65357ff4c2a393f";
+    hash = "sha256-8p07TGr81hivYPfkBU23sPSw81sMTPgHbR0sAtJOvT8=";
   };
+  # TypeScript で書いてあるので、Herdr が読む .js に変換したものを使う
+  herdrOffice = pkgs.runCommand "herdr-office" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
+    cd ${herdrOfficeSrc}
+    sh ./build.sh $out/mods/office
+  '';
   # コミュニティの Herdr レイアウト (MIT)。scripts/install.sh と同じものを置く
   herdrGlass = pkgs.fetchFromGitHub {
     owner = "noah4520";
