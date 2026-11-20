@@ -19,6 +19,7 @@ in
   home.packages = with pkgs; [
     # shell
     sheldon starship fzf bat eza fd ripgrep jq tree watch wget htop gping httpie glowm
+    terminal-notifier # Herdr の通知（押すと Herdr が前に出る）
     # dev
     neovim helix gh lazygit hunk treemd tuicr nb herdr awscli2 aws-vault devcontainer cmake gnumake clang-tools
     # runtimes / toolchains (プロジェクト別の node は flake.nix の devShells)

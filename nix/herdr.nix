@@ -9,8 +9,8 @@ let
   # 設定・レイアウト・自作 mod
   herdrConfig = build {
     repo = "herdr-config";
-    rev = "554bcdbde4efd5364b57c959c51e79ff72de0e35";
-    hash = "sha256-HyAeA4GX/qRX4gMFOJINrIDQ/4wsGQhpMT9Y+1NTxmM=";
+    rev = "72463a45408490e985c95be01f32b64d358dd4fc";
+    hash = "sha256-bpRiD1GLsd9xx2KJ+xt25yUZ0lX+0yVNYkvWTk1PbzM=";
     script = ''
       sh ./build.sh $out/mods
       cp -R settings.json keys.json layouts themes $out/
