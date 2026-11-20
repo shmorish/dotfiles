@@ -1,1 +1,7 @@
-{}
+{
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00_Inbox",
+  "attachmentFolderPath": "99_Assets",
+  "newLinkFormat": "shortest",
+  "alwaysUpdateLinks": true
+}
