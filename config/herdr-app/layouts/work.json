@@ -104,7 +104,8 @@
           "content": {
             "mod": "moe-office",
             "props": {
-              "lang": "ja"
+              "lang": "ja",
+              "scene": "ocean"
             }
           },
           "size": {
