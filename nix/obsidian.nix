@@ -3,7 +3,7 @@ let
   # Vault のノートは別の Git repo (shmorish/obsidian) で管理し、その .gitignore で .obsidian/ を外している
   vault = "${config.home.homeDirectory}/Private/obsidian/.obsidian";
   # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
-  # 変えたらそちらでタグを push し、ここの URL のタグと hash を上げる
+  # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
   toolkit = pkgs.fetchzip {
     url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.1.0/obsidian-toolkit.tar.gz";
     hash = "sha256-vNFDOIMkJ1yeaa9EqosoSQK25DOLhDzB01Oerb9mJTE=";
