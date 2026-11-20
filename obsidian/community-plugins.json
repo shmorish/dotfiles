@@ -1,4 +1,8 @@
 [
-  "obsidian-auto-link-title",
-  "auto-template-trigger"
+  "obsidian-git",
+  "obsidian-tasks-plugin",
+  "dataview",
+  "templater-obsidian",
+  "calendar",
+  "obsidian-auto-link-title"
 ]
