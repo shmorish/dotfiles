@@ -2,17 +2,13 @@
 let
   # Vault のノートは別の Git repo (shmorish/obsidian) で管理し、その .gitignore で .obsidian/ を外している
   vault = "${config.home.homeDirectory}/Private/obsidian/.obsidian";
-  # 自作のプラグインとテーマ。repo をコミット固定で取ってきて、その repo の build.sh で変換する。
-  # 変えたらそちらに push し、ここの rev と hash を上げる
-  toolkit = pkgs.runCommand "obsidian-toolkit" { nativeBuildInputs = [ pkgs.esbuild ]; } ''
-    cd ${pkgs.fetchFromGitHub {
-      owner = "shmorish";
-      repo = "obsidian-toolkit";
-      rev = "7d2bfdfe5f431bf75f2bb80c125e8f513f5e189e";
-      hash = "sha256-WnYsnQeCciWxDTfTvelIpgTxn0/I9ig1ab7Wv5AEkVs=";
-    }}
-    sh ./build.sh $out
-  '';
+  # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
+  # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
+  toolkit = pkgs.fetchzip {
+    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.1.0/obsidian-toolkit.tar.gz";
+    hash = "sha256-vNFDOIMkJ1yeaa9EqosoSQK25DOLhDzB01Oerb9mJTE=";
+    stripRoot = false;
+  };
 in
 {
   # Vault の設定は repo 実体へ symlink。Obsidian は symlink 越しに書くので、画面で変えた設定はそのまま repo に入る
