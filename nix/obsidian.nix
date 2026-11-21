@@ -5,8 +5,8 @@ let
   # 自作のプラグインとテーマ。obsidian-toolkit の CI が変換して Release に置いたものを取ってくる（ここではビルドしない）。
   # 変えたらそちらで manifest.json の version を上げて push し（CI がタグと Release を作る）、ここの URL のタグと hash を上げる
   toolkit = pkgs.fetchzip {
-    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.6.2/obsidian-toolkit.tar.gz";
-    hash = "sha256-E6cTlPv12BB5IPq4hX4A28+U16kOji61iFSnbDO+rUM=";
+    url = "https://github.com/shmorish/obsidian-toolkit/releases/download/v0.6.3/obsidian-toolkit.tar.gz";
+    hash = "sha256-dyHdBa+Kg0rJvvTMxWvgMyYhz+GsU6TxHAdwyTo0dCg=";
     stripRoot = false;
   };
   # community プラグインの Tasks。自作するには重いので、リリースにあるビルド済みファイルをバージョン固定で取ってくる。
