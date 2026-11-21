@@ -25,6 +25,7 @@ setup:
 
 switch:
 	@$(NIX) nix run home-manager -- switch --flake $(DOTFILES) -b backup
+	@mdimport "$(HOME)/Applications/Home Manager Apps"   # 置き直したアプリが Spotlight から消えるので索引し直す
 
 clean:
 	@$(NIX) nix run home-manager -- uninstall
