@@ -66,13 +66,14 @@ nix/             # Home Manager モジュール
   packages.nix   #   CLI / GUI / font のパッケージ一覧
   java.nix       #   JDK (21 が既定、8 は ~/.jdks/zulu-8)
   git.nix        #   git の設定 (~/.config/git/config, ignore を生成)
-  dotfiles.nix   #   home/ と config/ と claude/ を ~/、~/.config/、~/.claude/ へリンク
+  dotfiles.nix   #   home/ と config/ と claude/ と vscode/ を ~/、~/.config/、~/.claude/、VS Code のユーザー設定へリンク
   herdr.nix      #   Herdr.app の設定と mod (shmorish/herdr-config、shmorish/herdr-office) を取ってきて配置
   obsidian.nix   #   Obsidian の Vault 設定 (obsidian/) のリンクと自作プラグイン・テーマ (obsidian-toolkit)
 home/            # ~/ 直下に置くファイル (.zshrc, .vimrc)
 config/          # ~/.config/ 配下 (zsh, nvim, alacritty, herdr, ...)。git は git.nix で生成
 claude/          # Claude Code の skill と statusline
 obsidian/        # Obsidian の Vault 設定
+vscode/          # VS Code のユーザー設定 (settings.json)
 Makefile         # setup / switch / clean / nix-uninstall
 ```
 
