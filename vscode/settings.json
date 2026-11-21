@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.enableImages": true,
+  // VS Code は Nix で入れて更新するので、自分で更新させない（管理者権限で上書きされると make switch が止まる）
+  "update.mode": "none"
+}
