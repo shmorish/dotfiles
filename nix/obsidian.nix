@@ -40,4 +40,19 @@ in
     run mkdir -p "${vault}/plugins/obsidian-tasks-plugin"
     run ${pkgs.coreutils}/bin/cp -L --no-preserve=mode ${tasks}/* "${vault}/plugins/obsidian-tasks-plugin/"
   '';
+
+  # Discord に送ったメモやタスクを今日の Daily に足す bot（shmorish/obsidian-discord）。ログインしたら起動し、落ちたら起こし直す。
+  # repo は ~/Private/obsidian-discord に clone して npm install し、.env にトークンを書いておく（ここでは管理しない）
+  launchd.agents.obsidian-discord = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "${pkgs.nodejs_latest}/bin/node" "--env-file=.env" "bot.ts" ];
+      WorkingDirectory = "${config.home.homeDirectory}/Private/obsidian-discord";
+      RunAtLoad = true;
+      KeepAlive = true;
+      ThrottleInterval = 30;
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/obsidian-discord.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/obsidian-discord.log";
+    };
+  };
 }
